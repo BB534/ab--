@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>get请求传递参数</title>
+</head>
+<body>
+  <input type="text" name="username" id="name">
+  <input type="text" name="pwd" id="pwd">
+  <button>提交</button>
+  <script>
+    let name = document.getElementById('name');
+    let pwd = document.getElementById('pwd');
+    let btn = document.querySelector('button');
+    btn.onclick = function(){
+      let xhr = new XMLHttpRequest();
+      let parse = 'name=' + name.value + '&pwd='+pwd.value;
+      xhr.setRequestHeader()
+      xhr.open('get','/get?'+parse );
+      xhr.send();
+      xhr.onload = function(){
+        console.log(xhr.responseText);
+      }
+    }
+  </script>
+</body>
+</html>l

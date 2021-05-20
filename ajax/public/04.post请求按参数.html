@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>post请求参数</title>
+</head>
+<body>
+  <input type="text" name="username" id="name">
+  <input type="text" name="pwd" id="pwd">
+  <button>提交</button>
+  <script>
+    let name = document.getElementById('name');
+    let pwd = document.getElementById('pwd');
+    let btn = document.querySelector('button');
+    btn.onclick = function(){
+      let xhr = new XMLHttpRequest();
+      xhr.open('post','/post');
+      xhr.setRequestHeader('Content-type',"application/json")
+      xhr.send(window.JSON.stringify({name:name.value,pwd:pwd.value}));
+      xhr.onload = function(){
+        console.log(xhr.responseText);
+      }
+    }
+  </script>
+</body>
+</html>

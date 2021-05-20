@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        table {
+            width: 400px;
+            border: 1px solid #000;
+            border-collapse: collapse;
+            margin: 0 auto;
+        }
+        
+        td,
+        th {
+            border: 1px solid #000;
+            text-align: center;
+        }
+        
+        input {
+            width: 50px;
+        }
+        
+        .search {
+            width: 600px;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="search">
+        按照价格查询: <input type="text" class="start"> - <input type="text" class="end"> <button class="search-price">搜索</button> 按照商品名称查询: <input type="text" class="product"> <button class="search-pro">查询</button>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>产品名称</th>
+                <th>价格</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</body>
+
+<script>
+  let Commodity= [
+    {
+      id:1,
+      price:199,
+      content:"小米5"
+    },
+    {
+      id:2,
+      price:4999,
+      content:"华为Mteo40Pro"
+    },
+    {
+      id:3,
+      price:2499,
+      content:"红米K40Pro"
+    },
+    {
+      id:4,
+      price:8888,
+      content:"苹果xr"
+    },
+    {
+      id:5,
+      price:2000,
+      content:"viovXplay6"
+    },
+    {
+      id:6,
+      price:9999,
+      content:"海信"
+    },
+  ]
+
+  let tbody = document.querySelector('tbody');
+  let search = document.querySelector('.search-price');
+  let start = document.querySelector('.start');
+  let end  = document.querySelector('.end');
+  let searchPro = document.querySelector('.search-pro');
+  let product = document.querySelector('.product');
+  function rendering(data){
+    // 循环数组
+  data.forEach(function(value){
+    // 创建一个tr节点
+    let tr = document.createElement('tr');
+    // 为tr节点写入内容
+    tr.innerHTML = '<td>'+value.id+'</td><td>'+value.price+'</td><td>'+value.content+'</td>';
+    // 将元素追加到父节点中
+    tbody.appendChild(tr);
+  });
+  }
+  rendering(Commodity); // 调用渲染方法
+  search.addEventListener('click',function(){
+    let newArr = Commodity.filter(function(value){
+        return value.price >= start.value && value.price <= end.value;
+    });
+    tbody.innerHTML = '';
+    rendering(newArr);
+  });
+
+  searchPro.addEventListener('click',function(){
+      let arr = [];
+      Commodity.some(function(value){
+        if(value.content == product.value){
+            arr.push(value);
+            return true;
+        }
+      });
+      tbody.innerHTML = '';
+      rendering(arr);
+  });
+
+</script>
+</html>

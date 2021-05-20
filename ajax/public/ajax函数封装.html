@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ajax函数封装</title>
+</head>
+<body>
+  
+<script>
+  function ajax(options){
+    let defules = {
+      type:'get',
+      url:'',
+      data:{},
+      headers:{
+        'Content-Type':'application/x-www-form-urlencoded',
+      },
+      success:function(){},
+      error:function(){}
+    }
+    Object.assign(defules,options);
+    let xhr = new XMLHttpRequest();
+    let parms = '';
+    for (let key in defules.data) {
+      parms += key + '=' + defules.data[key];
+    }
+    parms = parms.substring(0,parms.length-1);
+    if(defules.type == 'get'){
+      defules.url = defules.url + '?' + parms;
+    }
+    xhr.open(defules.type,defules.url);
+    if(defules.type == 'post'){
+      let contentType = defules.headers['Content-Type'];
+      xhr.setRequestHeader('Content-type',contentType);
+      if(contentType.includes('application/json')){
+        
+          xhr.send(JSON.stringify(defules.data));
+      }else{
+        xhr.send(parms);
+      }
+    }else{
+      xhr.send();
+    }
+    xhr.onload = function(){
+      let contenttype = xhr.getResponseHeader('Content-type');
+      let resData = xhr.responseText;
+      if(contenttype.includes('application/json')){
+        resData = JSON.parse(resData);
+      }
+      if(xhr.readyState == 4 && xhr.status == 200){
+              defules.success(resData,xhr);
+      }else{
+          defules.error(resData,xhr);
+      }
+    }
+  }
+
+  ajax({
+    type:'post',
+    url:'/post',
+    data:{name:"张三",age:20},
+    headers:{
+      'Content-Type':'application/json'
+    },
+    success:function(data){
+      console.log(data);
+    },
+    error:function(data,xhr){
+      console.log(data,xhr);
+    }
+  })
+</script>
+</body>
+</html>

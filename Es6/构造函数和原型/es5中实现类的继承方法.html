@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>es5实现类的继承方法</title>
+</head>
+<body>
+  <h1>es5实现类的继承方法</h1>
+  <script>
+    function Ftear(name,age){
+      this.name = name;
+      this.age = age;
+    }
+
+    Ftear.prototype.moeny = function(){
+      console.log("我会赚钱");
+    }
+    
+    function Hzi(name,age){
+      Ftear.call(this,name,age);
+    }
+    // 将子类的prototype覆盖为父类的实例对象,就会开辟新的内存,不直接指向父类的原型
+    Hzi.prototype = new Ftear();
+    Hzi.prototype.sx = function(){
+      console.log("我会上学");
+    }
+    // 因为实例对象的this指向是调用者,所以要使用constructor将this指向重新改回子类
+    Hzi.prototype.constructor = Hzi;
+    let son = new Hzi("李德华",18);
+
+    console.log(son);
+    console.log(Ftear.prototype);
+  </script>
+</body>
+</html>

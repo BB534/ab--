@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/assets/bootstrap/dist/css/bootstrap.min.css">
+  <title>Document</title>
+</head>
+<body>
+  <div class="container">
+      <div class="form-group">
+        <label>请选择文件</label>
+        <input type="file" name="file" id="file">
+        <div class="img" id="box">
+          
+        </div>
+        <br/>
+        <div class="progress">
+            <div class="progress-bar" style="width: 0%;" id="bar">0%</div>
+        </div>
+      </div>
+  </div>
+  <script>
+    let file = document.getElementById('file');
+    let box = document.getElementById('box')
+    file.onchange = function(){
+      let formdata = new FormData();
+      formdata.append('arrtName',this.files[0]);
+      let xhr = new XMLHttpRequest();
+      xhr.open('post','http://127.0.0.1:3000/upload');
+      xhr.upload.onprogress = function(e){
+        let bar = document.getElementById("bar");
+        // 进度等于文件大小 / 上传大小 百分比
+        let Progress = (e.loaded / e.total) * 100 + '%';
+        bar.style.width = Progress;
+        bar.innerHTML = Progress;
+      }
+      xhr.send(formdata);
+      xhr.onload = function(){
+        if(xhr.status == 200){
+          result = JSON.parse(xhr.responseText);
+          let img = document.createElement('img');
+          img.src = result.path;
+          // 当标签加载完成后再执行显示事件
+          img.onload =function(){
+            box.appendChild(img);
+          }
+        }
+      }
+    }
+  </script>
+</body>
+</html>

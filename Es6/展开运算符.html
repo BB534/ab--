@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h1>我是展开运算符</h1>
+  <script>
+    // 数组展开
+    let arr = [1,2,3];
+    let arr2 = ["a","b",...arr,"c"];
+    console.log(arr2);
+    // 利用展开运算符的剩余参数来解构
+    let [e,f,...c] = arr2;
+    console.log(e,f,c);
+    // 对象展开
+    let obj = {
+      a:1,
+      b:2
+    }
+    // let obj2 = {
+    //   ...obj,
+    //   c:3,
+    //   d:4
+    // }
+    // console.log(obj2);
+    // 利用展开运算符来进行对象赋值，而不改变内容
+    let obj2 = {...obj};
+    obj2.a = 3;
+
+    console.log(obj2);
+    console.log(obj);
+  </script>
+</body>
+</html>

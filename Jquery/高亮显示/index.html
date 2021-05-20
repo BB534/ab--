@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>高亮显示</title>
+  <style>
+    body{
+      background: #000;
+    }
+    .content{
+      display: flex;
+      margin: 25vh auto;
+      border: 1px solid #fff;
+      flex-wrap: wrap;
+      justify-content:space-around;
+      width: 660px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+    .content div{
+      width:30%;
+    }
+  </style>
+</head>
+<body>
+  <div class="content">
+    <div><img src="./images/01.jpg" alt=""></div>
+    <div><img src="./images/02.jpg" alt=""></div>
+    <div><img src="./images/03.jpg" alt=""></div>
+    <div><img src="./images/04.jpg" alt=""></div>
+    <div><img src="./images/05.jpg" alt=""></div>
+    <div><img src="./images/06.jpg" alt=""></div>
+  </div>
+  <script src="./jquery.min.js"></script>
+  <script>
+    $(function(){
+      $('.content div').hover(function(){
+        $(this).siblings().stop().fadeTo(400,0.5);
+      },function(){
+        $(this).siblings().stop().fadeTo(400,1);
+      })
+    })
+  </script>
+</body>
+</html>

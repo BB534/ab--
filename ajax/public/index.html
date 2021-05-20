@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ajax</title>
+</head>
+<body>
+  <h1>hell，word!</h1>
+  <script type="text/javascript">
+    function showPreview(source) {
+      var file = source.files[0];
+      if(window.FileReader) {
+        var fr = new FileReader();
+        fr.onloadend = function(e) {
+          // document.getElementById("portrait").innerHTML = e.target.result;
+          console.log(e);
+        };
+        fr.readAsDataURL(file);
+      }
+  
+    }
+  </script>
+  <input type="file" name="file" οnchange="showPreview(this)" />
+  <div class="box" id="portrait"></div>
+</body>
+</html>

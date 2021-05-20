@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>淘宝精品服饰案例</title>
+  <style>
+    *{
+      box-sizing: border-box;
+    }
+    ul{
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    a{
+      text-decoration: none;
+      color: #000;
+    }
+    .body{
+      margin: 20vh auto;
+    }
+    .tab{
+      float: left;
+    }
+    .tab ul li a{
+      display: block;
+      padding: 5px 5px;
+      text-align: center;
+      border: 1px solid pink;
+      border-bottom: none;
+    }
+    .tab ul li a:hover{
+      background: url('./images/abg\(1\).gif');
+    }
+    .content{
+      float: left;
+      height: 100%;
+      border: 1px solid pink;
+      height: 100%;
+      border: 1px solid pink;
+      border-left:none;
+    }
+    .content{
+      height: 288px;
+      overflow: hidden;
+      width: 230px;
+    }
+    .content img{
+      height: 288px;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="body">
+    <div class="tab">
+      <ul>
+        <li><a href="#">女靴</a></li>
+        <li><a href="#">雪地靴</a></li>
+        <li><a href="#">冬裙</a></li>
+        <li><a href="#">呢大衣</a></li>
+        <li><a href="#">毛衣</a></li>
+        <li><a href="#">棉服</a></li>
+        <li><a href="#">女裤</a></li>
+        <li><a href="#">羽绒服</a></li>
+        <li><a href="#">牛仔裤</a></li>
+      </ul>
+    </div>
+    <div class="content">
+      <div><img src="./images/女靴.jpg" alt=""></div>
+      <div><img src="./images/雪地靴.jpg" alt=""></div>
+      <div><img src="./images/冬裙.jpg" alt=""></div>
+      <div><img src="./images/呢大衣.jpg" alt=""></div>
+      <div><img src="./images/毛衣.jpg" alt=""></div>
+      <div><img src="./images/棉服.jpg" alt=""></div>
+      <div><img src="./images/女裤.jpg" alt=""></div>
+      <div><img src="./images/羽绒服.jpg" alt=""></div>
+      <div><img src="./images/牛仔裤.jpg" alt=""></div>
+    </div>
+  </div>
+  <script src="./jquery.min.js"></script>
+  <script>
+    $(function(){
+      $('.tab>ul>li').mouseover(function(){
+        let item = $(this).index();
+        $('.content div').eq(item).show();
+        $('.content div').eq(item).siblings().hide();
+      });
+    })
+  </script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>改变this指向的三种方法</title>
+</head>
+<body>
+    <h1>call(),apply(),bind()</h1>
+    <button>发送验证码</button>
+    <script>
+      // 1.call方法,会立即调用函数并且改变this指向(可传递参数),主要作用:用于继承
+      /*let o ={
+        name:'1'
+      }
+
+      let f = function(){
+        console.log(2);
+        console.log(this);
+      }
+      f.call(o);
+      */
+      // 继承
+
+      /*function Ftder(name,age,sex){
+        this.name = name;
+        this.age = age;
+        this.sex = sex;
+      }
+
+      function Son(name,age,sex){
+        Ftder.call(this,name,age,sex)
+        console.log(this);
+      }
+
+      let f = new Son('刘德华',38,'男');
+      */
+    
+    // 2.apply() 会立即调用执行函数,传递参数为数组,常用于改变this指向用数学方法
+    /*
+      求最大值,数组不可以直接调用数学方法,所以我们将指向改为Math，既可以调用内置方法
+    let arr = [1,5,88,102,999];
+    let max = Math.max.apply(Math,arr);
+    console.log(max);
+    */
+    
+    // 3.bind()，不会调用函数,但是会改变内部this指向;
+    /*
+      倒计时案例 利用bind(将this指向改为实例对象)
+      let btn = document.querySelector('button');
+      btn.addEventListener('click',function(){
+        this.disabled = true;
+        setTimeout(function(){
+          this.disabled = false;
+        }.bind(this),6000)
+      });
+    */
+    
+    /*总结
+      相同点: 
+        都可以改变函数内部的this指向
+      区别点:
+        1.call和apply会调用函数，并且改变内部this指向
+        2.call和apply,传递参数不用，前者为普通传递,ary1,ary2.后者为数组形式[arr]
+        3.bind不会调用函数,会改变this指向
+      应用场景:
+        1.call由于传递的是普通参数,常用于继承
+        2.apply 由于传递的数组,常用于数组相关的操作,例如借助数学对象实现数组的最大值最小值
+        3.bind 常用语不想调用函数，但是还是想改变this指向 例如定时器内部的this改变
+    */
+    
+    
+    </script>
+</body>
+</html>

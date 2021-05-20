@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>es5新增数组方法</title>
+</head>
+<body>
+  <h1>新增数组方法</h1>
+  <script>
+      let arr  = [1,2,3,4,5,6];
+      // 遍历数组,返回筛选条件符合的元素组成的新素组
+      // let newArr = arr.filter(value=>value > 2);
+      // 遍历数组,找到第一个满足条件的元素返回true,并停止运行,没找到返回false
+      // let is = arr.some(x=> x > 2);
+      // 创建一个新数组,并对元素进行处理
+      // let newArr = arr.map(x => x*2);
+      // 遍历元素,指定一个回调函数,所有元素通过条件则返回true
+      let newArr = arr.every(x => x >= 1);
+      console.log(newArr);
+    
+    </script>
+</body>
+</html>

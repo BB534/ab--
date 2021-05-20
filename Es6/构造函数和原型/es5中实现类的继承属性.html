@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h1>eS5中实现子类父类继承</h1>
+  <script>
+    // 创建父类构造函数
+    function Fteader(name,age){
+      this.name =  name;
+      this.age = age;
+  }
+  /*
+      1.我想在子类中继承父类,并且调用父类中的属性；
+      2.利用call()调用父类,并且把父类中的this指向改为子类中的this
+  */
+  function Hzi(name,age){
+    Fteader.call(this,name,age);
+  }
+
+  let song = new Hzi("刘德华",18);
+  console.log(song);
+
+  </script>
+</body>
+</html>

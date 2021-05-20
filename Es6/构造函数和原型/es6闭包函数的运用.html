@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>闭包函数的运用</title>
+</head>
+<body>
+  <h1>闭包计算打车价格</h1>
+  <h4>起步价5元,超过一公里+五元，拥堵+5</h4>
+  <script>
+    let dd = (function(){
+      // 起步价
+      let star = 8;
+      //  总价
+      let totalPrice = 0;
+
+      return {
+        car:function(n){
+            if(n > 3){
+              totalPrice =  star + ( n - 3 ) * 5;
+            }
+            return totalPrice
+        },
+        congestionPrice:function(flag){
+          return flag ? totalPrice + 5 : totalPrice;
+        }
+      }
+    })();
+    console.log(dd.car(5));
+    console.log(dd.congestionPrice(true));
+  </script>
+</body>
+</html>

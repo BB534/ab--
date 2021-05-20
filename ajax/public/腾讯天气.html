@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/assets/bootstrap/dist/css/bootstrap.min.css">
+  <title>腾讯天气</title>
+</head>
+<body>
+  <div class="container">
+    <!-- On rows -->
+    <table class="table table-hover" id="table">
+    </table>
+  </div>
+    
+    <script src="./js/jsonp.js"></script>
+    <script src="./js/template-web.js"></script>
+    <script type="text/html" id='tpl'>
+      <tr class="active">
+        <td class="active">时间</td>
+        <td class="active">温度</td>
+        <td class="active">天气</td>
+        <td class="active">风向</td>
+        <td class="active">风力</td>
+      </tr>
+      {{each data}}
+      <tr class="active">
+        <td class="active">{{dateFormat($value.update_time)}}</td>
+        <td class="active">{{$value.degree}}</td>
+        <td class="active">{{$value.weather_short}}</td>
+        <td class="active">{{$value.wind_direction}}</td>
+        <td class="active">{{$value.wind_power}}</td>
+      </tr>
+      {{/each}}
+    </script>
+    <script>
+      function dateFormat(date){
+        let year = date.substr(0,4),month = date.substr(4,2),day = date.substr(6,2),time = date.substr(8,2);
+        return year + '年' + month + '月' + day + '日' + time + '时';
+      }
+      // 开放模板变量
+      template.defaults.imports.dateFormat = dateFormat;
+      jsonp({
+        url:'https://wis.qq.com/weather/common',
+        data:{
+          source: 'pc',
+          weather_type: 'forecast_1h',
+          province: '浙江省',
+          city: '金华市'
+        },
+        success:function(data){
+          let html = template('tpl',{data:data.data.forecast_1h});
+          document.getElementById('table').innerHTML = html;
+        }
+      })
+    </script>
+</body>
+</html>

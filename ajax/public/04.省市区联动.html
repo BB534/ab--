@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>搜索框输入文字自动提示</title>
+	<link rel="stylesheet" href="/assets/bootstrap/dist/css/bootstrap.min.css">
+	<style type="text/css">
+		.container {
+			padding-top: 150px;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="form-inline">
+			<div class="form-group">
+				<select class="form-control" id="province">
+					<option>请选择省份</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<select class="form-control" id="city">
+					<option>请选择城市</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<select class="form-control" id="area">
+					<option>请选择县城</option>
+				</select>
+			</div>
+		</div>
+	</div>
+	<script src="/js/ajax.js"></script>
+	<script src="/js/template-web.js"></script>
+	<script type="text/html" id="provinceTpl">
+		<option>请选择省份</option>
+		{{each result}}
+			<option value="{{$value.id}}">{{$value.name}}</option>
+		{{/each}}
+	</script>
+	<script type="text/html" id="cityTpl">
+		<option>请选择省份</option>
+		{{each data}}
+		<option value="{{$value.id}}">{{$value.name}}</option>
+		{{/each}}
+	</script>
+	<script type="text/html" id="areaTpl">
+		<option>请选择省份</option>
+		{{each data}}
+		<option>{{$value.name}}</option>
+		{{/each}}
+	</script>
+	<!-- 省份模板 -->
+	<script>
+		let province = document.getElementById('province');
+		let city = document.getElementById('city');
+		let area = document.getElementById('area');
+		ajax({
+			type:'get',
+			url:'http://127.0.0.1:3000/province',
+			success:function(data){
+				let provinceContent = template('provinceTpl',{result:data});
+				province.innerHTML = provinceContent;
+			},
+			error:function(data,xhr){
+				console.log(xhr);
+			}
+		})
+		/**
+		 * @pid:String
+		 * @url:String
+		 * @domHtml:Object
+		 * @tplId:String
+		**/
+		function getAttached(pid,url,domHtml,tplId){
+			ajax({
+						type:'get',
+						url:url,
+						data:{id:pid},
+						success:function(data){
+							let attachedHtml = template(tplId,{data:data});
+							domHtml.innerHTML = attachedHtml;
+					}
+			})
+		}
+		province.onchange = function(){
+			let pid = this.value;
+			getAttached(pid,'/cities',city,'cityTpl');
+		}
+		city.onchange = function(){
+			let pid = this.value;
+			getAttached(pid,'/areas',area,'areaTpl');
+		}
+	</script>
+</body>
+</html>

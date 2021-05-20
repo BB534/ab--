@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>搜索框输入文字自动提示</title>
+	<link rel="stylesheet" href="/assets/bootstrap/dist/css/bootstrap.min.css">
+	<style type="text/css">
+		.container {
+			padding-top: 150px;
+		}
+		.list-group {
+			display: none;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="form-group">
+			<input type="text" class="form-control" placeholder="请输入搜索关键字" id="search">
+			<ul class="list-group" id="list-box">
+				
+			</ul>
+		</div>
+	</div>
+	<script src="/js/ajax.js"></script>
+	<script src="/js/template-web.js"></script>
+  <script id="tpl" type="text/html">
+    {{each result}}
+        <li class="list-group-item">{{$value}}</li>
+    {{/each}}
+  </script>
+  <script>
+    /**
+     * 获取输入表单
+     * 给表单注册输入事件
+     * 获取表单内容向服务端提交请求
+     * 获取返回内容渲染模板
+     * 解决无用的提交请求 利用定时器
+     * 解决内容为空时的渲染
+     **/
+    let search = document.getElementById('search');
+    let list = document.getElementById('list-box');
+    let timing = null;
+    search.oninput = function(){
+      clearInterval(timing);
+      let key = this.value;
+      if(key.trim().length == 0){
+        list.style.display = 'none';
+        return;
+      }
+      timing = setTimeout(function(){ 
+        ajax({
+        type:'get',
+        url:'http://127.0.0.1:3000/searchAutoPrompt',
+        data:{key:key},
+        success:function(result){
+          // 利用模板文件渲染模板
+          let html = template('tpl',{result:result});
+          list.innerHTML = html;
+          list.style.display = 'block';
+        }
+      });
+      },800)
+    }
+  </script>
+</body>
+</html>

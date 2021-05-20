@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>验证邮箱地址是否已经注册</title>
+	<link rel="stylesheet" href="/assets/bootstrap/dist/css/bootstrap.min.css">
+	<style type="text/css">
+		p:not(:empty) {
+			padding: 15px;
+		}
+		.container {
+			padding-top: 100px;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="form-group">
+			<label>邮箱地址</label>
+			<input type="email" class="form-control" placeholder="请输入邮箱地址" id="email">
+		</div>
+		<!-- 错误 bg-danger 正确 bg-success -->
+		<p id="info"></p>
+	</div>
+	<script src="./js/ajax.js"></script>
+  <script>
+    let emailInt = document.getElementById('email');
+		let info = document.getElementById('info');
+		emailInt.onblur = function(){
+			let email = this.value;
+			let reg = /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/;
+			if(!reg.test(email)){
+				info.innerHTML = '请输入符合规则的邮箱地址！';
+				info.className = 'bg-danger';
+				return;
+			}
+			ajax({
+				type:'get',
+				url:'http://127.0.0.1:3000/verifyEmailAdress',
+				data:{email:email},
+				success:function(result){
+						info.innerHTML = result.message;
+						info.className = 'bg-success';
+				},
+				error:function(result){
+					info.innerHTML = result.message;
+					info.className = 'bg-danger';
+				}
+			})
+		}
+  </script>
+</body>
+</html>

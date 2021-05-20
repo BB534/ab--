@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+  <h1>我是对象解构</h1>
+  <script>
+    // 对象解构,解析为key对应变量名
+    let obj = {
+      a:1,
+      b:2
+    }
+    let {a,b} = obj;
+    console.log(a,b);
+
+    // 数组解构赋值,解析模式为数组下标
+    let arr = [1,2,3];
+    let [e,f] = arr;
+    console.log(e,f);
+    // 总结,可迭代就可以使用对象解构
+  </script>
+</body>
+</html>

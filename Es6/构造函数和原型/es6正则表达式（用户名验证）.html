@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>正则表达式</title>
+  <style>
+    .gray {
+      color: gray;
+  }
+  .red {
+    color: red;
+  }
+  .green {
+    color: green;
+  }
+  </style>
+</head>
+<body>
+  <input type="text"> <label for="" class="gray">请输入用户名</label>
+  <script>
+    let input = document.querySelector('input')
+    let label = document.querySelector('.gray')
+    let regexp = /^[a-zA-z0-9]{6,16}/;
+    
+    input.onblur = function(){
+      if(regexp.test(this.value)){
+        label.className = 'green';
+        label.innerHTML = '用户名输入正确'
+      }else{
+        label.className = 'red';
+        label.innerHTML = '用户名输入错误';
+      }
+    }
+  </script>
+</body>
+</html>

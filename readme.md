@@ -951,6 +951,163 @@ nrm use taobao
 nrm test
 ```
 
+## LOG4j 日志保持第三方模块
+
+## 内置模块
+
+### URL
+
+#### url.parse 
+
+```js
+// 将字符串url解析为对象
+const url = require('url');
+const log4js = require('log4js');
+// 配置日志
+log4js.configure({
+    appenders: { cheese: { type: "file", filename: "cheese.log" } },
+    categories: { default: { appenders: ["cheese"], level: "error" } }
+});
+const logger = log4js.getLogger("cheese");
+let UrlString = 'http://www.baidu.com:433/path?id=2#tag';
+
+console.log(url.parse(UrlString));
+
+```
+
+打印结果
+
+```json
+{
+    protocol: 'http:',
+    slashes: true,    
+    auth: null,       
+    host: 'www.baidu.com:433',
+    port: '433',
+    hostname: 'www.baidu.com',
+    hash: '#tag',
+    search: '?id=2',
+    query: 'id=2',
+    pathname: '/path',
+    path: '/path?id=2',
+    href: 'http://www.baidu.com:433/path?id=2#tag'
+  }
+```
+
+#### url.format 
+
+```js
+将对象url转换为字符串
+let urlObj = {
+    protocol: 'http:',
+    slashes: true,    
+    auth: null,       
+    host: 'www.baidu.com:433',
+    port: '433',
+    hostname: 'www.baidu.com',
+    hash: '#tag',
+    search: '?id=2',
+    query: 'id=2',
+    pathname: '/path',
+    path: '/path?id=2',
+    href: 'http://www.baidu.com:433/path?id=2#tag'
+  }
+  console.log(url.format(urlObj));
+```
+
+解析结果
+
+```
+http://www.baidu.com:433/path?id=2#tag
+```
+
+#### url.resolve
+
+```js
+// 将url字符串截取
+url.resolve('http://www.baidu.com'.'/one') // 'http://example.com/one'
+url.resolve('http://www.baidu.com/a','/b') // http://www.baidu.com/b
+url.resolve('http://www.baidu.com/a','../') // http://www.baidu.com
+```
+
+#### URLSearchParams
+
+```js
+let UrlString = 'http://www.baidu.com:433/path?id=2#tag';
+console.log(data.get('id'));
+
+//打印 2 解析参数
+```
+
+#### *querystring*
+
+```js
+const querystring = require('querystring');
+const query = 'id=2&name=tongyi&from=北京';
+// { id: '2', name: 'tongyi', from: '北京' }
+console.log(querystring.parse(query)); // URl参数转换为对象
+
+```
+
+```js
+//  { id: '2', name: 'tong', from: '北京' }
+const query3 = 'id:2/name:tong/from:北京';
+console.log(querystring.parse(query3,'/',':'));
+```
+
+```js
+// id=2&name=tongyi&from=北京
+const query2 = 'id%3D2%26name%3Dtongyi%26from%3D%E5%8C%97%E4%BA%AC'
+console.log(querystring.unescape(query2)); //将编码解码
+```
+
+```js
+//id%3D2%26name%3Dtongyi%26from%3D%E5%8C%97%E4%BA%AC
+console.log(querystring.escape(query)); //将参数进行编码转换
+```
+
+```js
+// id=2&name=tongyi&from=%E5%8C%97%E4%BA%AC
+const queryobj = {id:2,name:'tongyi',from:'北京'};
+console.log(querystring.stringify(queryobj));
+```
+
+```js
+// id=2&name=tongyi&from=北京
+const queryobj = {id:2,name:'tongyi',from:'北京'};
+let newobj = querystring.stringify(queryobj,null,null,{
+    encodeURIComponent(string){
+        return querystring.unescape(string)
+    }
+})
+console.log(newobj);
+```
+
+### HTTP
+
+```js
+const http = require('http');
+const server = http.createServer((req,res)=>{
+    // 接收请求参数
+    let url = req.url;
+    // 写入前端数据
+    res.write(url);
+    // 结束
+   	res.end()
+})
+
+// 监听
+server.listen(8090,'localhost',()=>{
+    console.log('localhost:8090')
+})
+```
+
+#### 浏览器端调试node服务
+
+```yacas
+node --inspect --inspect-brk app.js
+```
+
 
 
 ## 1.文件写入(fs)
@@ -988,19 +1145,6 @@ node 2.3-process.js argv1 argv2
 ## 3.网络通讯
 
 ```js
-const http = require('http');
-const server = http.createServer((req,res)=>{
-    // 接收请求参数
-    let url = req.url;
-    // 写入前端数据
-    res.write(url);
-    // 结束
-   	res.end()
-})
 
-// 监听
-server.listen(8090,'localhost',()=>{
-    console.log('localhost:8090')
-})
 ```
 

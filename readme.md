@@ -832,3 +832,109 @@ git忽略清单文件名称
 ## 为仓库添加详细的说明
 
 在项目根目录文件新建：readme.md 文件
+
+
+
+# Node.js
+
+## NVM 版本管理器
+
+```js
+nvm alias default // 设置默认版本
+```
+
+## NPM
+
+```yacas
+npm i --S // 生产环境
+```
+
+```yacas
+npm i --D // 开发环境
+```
+
+```yacas
+npm i --g // 全局安装
+```
+
+```yacas
+npm i --production // 只装生产环境的包
+```
+
+```yacas
+npm init -y // 初始化package.json  ^只锁定主版本号,~锁定三个版本，*最新版本，空锁定补丁
+```
+
+```yacas
+npm view 包名 versions // 查看版本
+```
+
+```yacas
+npm i 包名@版本号 // 安装指定版本
+```
+
+```yacas
+npm outdated // 查看版本过期信息
+```
+
+```yacas
+npm update // 更新版本
+```
+
+```yacas
+npm cache clean --force // 清除缓存
+```
+
+
+
+## 1.文件写入(fs)
+
+```js
+// 引入文件模块
+const fs = require('fs');
+// 没有异步就需要错误回调
+fs.writeFile('./logo','hello',(err,data)=>{
+    if(err){
+        
+    }else{
+        console.log('写入文件成功')
+    }
+})
+```
+
+## 2.进程管理(Process)
+
+```js
+function main(argv) {
+  console.log(argv)
+}
+
+main(process.argv.slice(2))
+}
+```
+
+运行
+
+```js
+node 2.3-process.js argv1 argv2
+```
+
+## 3.网络通讯
+
+```js
+const http = require('http');
+const server = http.createServer((req,res)=>{
+    // 接收请求参数
+    let url = req.url;
+    // 写入前端数据
+    res.write(url);
+    // 结束
+   	res.end()
+})
+
+// 监听
+server.listen(8090,'localhost',()=>{
+    console.log('localhost:8090')
+})
+```
+

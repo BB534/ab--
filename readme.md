@@ -885,6 +885,72 @@ npm update // 更新版本
 npm cache clean --force // 清除缓存
 ```
 
+```
+process.env.npm_package_config_env // 访问package.json中自定义的字段
+```
+
+```
+npm run // 运行自定义脚本
+```
+
+
+## npm 安装 git 上发布的包
+```yacas
+# 这样适合安装公司内部的git服务器上的项目
+npm install git+https://git@github.com:lurongtao/gp-project.git
+
+# 或者以ssh的方式
+npm install git+ssh://git@github.com:lurongtao/gp-project.git
+```
+
+
+
+## cross-env 运行跨平台设置和使用环境变量的脚本
+
+cross-env 使得您可以使用单个命令，而不必担心为平台正确设置或使用环境变量。这个迷你的包(cross-env)能够提供一个设置环境变量的 scripts，让你能够以 Unix 方式设置环境变量，然后在 Windows 上也能兼容运行。
+
+```json
+{
+  "scripts": 
+    {
+    "build": "cross-env NODE_ENV=production webpack --config build/webpack.config.js"
+  	}
+}
+```
+
+在脚本中获取
+
+```js
+const node_env = process.env.NODE_ENV
+// 取到production
+```
+
+## NRM 管理源
+
+安装
+
+```yacas
+npm i nrm -g
+```
+
+使用
+
+```yacas
+nrm ls 
+```
+
+切换
+
+```yacas
+nrm use taobao
+```
+
+测试速度
+
+```yacas
+nrm test
+```
+
 
 
 ## 1.文件写入(fs)

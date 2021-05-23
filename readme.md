@@ -1,6 +1,6 @@
 # 黑马进阶记录
 
-##### **各种事件**
+## **各种事件**
 
 ```apl
 onclick
@@ -19,24 +19,24 @@ onchange：改变
 onsubmit ：表单提交。
 ```
 
-##### 加载动画
+## 加载动画
 ```asciiarmor
 LottieFiles
 ```
 
-##### ES6类的继承
+## ES6类的继承
 
 ```asciiarmor
 super()  //继承父类的方法,但是必须在所有this之前使用
 ```
 
-##### ES5构造函数
+## ES5构造函数
 ```asciiarmor
 原型链 ___proto__对象都有原型链
 Obj.prototype.方法名 给构造函添加方法 但是this指向改变了,所以需要使用constructor.对象 指回函数
 ```
 
-##### 内置对象
+## 内置对象
 ```clike
 数组
     forEach() 遍历数组
@@ -57,18 +57,18 @@ Obj.prototype.方法名 给构造函添加方法 但是this指向改变了,所�
     }重新编辑对象
 ```
 
-##### 改变函数内部this指向问题
+## 改变函数内部this指向问题
 ```apl
 obj.call(obj,value)
 obj.apply(obj,[]) 两者都会立即调用函数,并且改变this指向
 obj.bind(obj.value) 不会调用函数，改变内部this指向
 ```
-##### 高级函数
+## 高级函数
 ```apl
 >定义:传入参数带有函数，或返回参数带有函数就为高级函数
 >例如当我们想某个div移动到指定距离后，执行其他函数，这时就可以传入一个函数来完成剩余的函数
 ```
-##### 闭包
+## 闭包
 ```js
 定义:函数,局部变量可以被其他作用域访问即为闭包，用于变量作用域的延伸
 例子A：利用闭包的方式得到当前小li的索引号
@@ -96,10 +96,10 @@ for(let i = 0;i < lis.length; i++){
 > 	1.闭包是什么? 闭包是一个函数(一个作用域内可以访问另外一个函数局部变量的函数)
 > 	2.闭包的作用是什么? 延伸变量的作用范围
 
-##### 递归
+## 递归
 	>定义:如果一个函数在内部可以调用函数本身,那么这个函数就是递归函数,递归函数得有条件退出。不然就是死循环
 
-##### 深拷贝与浅拷贝
+## 深拷贝与浅拷贝
 ```js
     obj.assign() 只拷贝第一次,层次内部则会引用原有内存地址
     利用递归来实现深拷贝函数:
@@ -119,7 +119,7 @@ for(let i = 0;i < lis.length; i++){
     }
 ```
 
-##### 正则表达式
+## 正则表达式
 ```apl
 创建 let regExp = /123/
 检测方法 regExp.test(检测内容) 
@@ -152,19 +152,19 @@ i：忽略大小写
 gi：全局匹配忽略大小写
 ```
 
-##### 解构赋值
+## 解构赋值
 ```apl
 数组解构 [a,b,c] = [1,2,3]；a = 1,b=2,c=3; 一对一
 对象解构:{name,age} = {name:'张三',age:18} 
 对象解构2: {name:myName,age:myAge} = {name:'张三',age:18}  变量名为myName myAge
 ```
 
-##### 箭头函数
+## 箭头函数
 ```apl
 ler fn = (参数) => {//函数体} 箭头函数没有this 一边用变量名来赋值;
 ```
 
-##### 扩展运算符
+## 扩展运算符
 ```apl
 1.可以将数组拆分成以逗号分割的参数序列
 
@@ -191,7 +191,7 @@ ler fn = (参数) => {//函数体} 箭头函数没有this 一边用变量名来�
 ```
 
 
-##### Array的扩展方法 
+## Array的扩展方法 
 ```apl
 2.Array[idnex]访问数组元素
 3. forEach遍历数组
@@ -217,7 +217,7 @@ ler fn = (参数) => {//函数体} 箭头函数没有this 一边用变量名来�
     [1,2,3] .includes(2) // true
 ```
 
-##### String的扩展方法
+## String的扩展方法
 ```apl
 ``  模板字符串 ${}解析变量，并且可以换行，并且可以调用函数，返回函数执行结果
 startsWith():判断参数字符串是否在原字符串的头部，返回布尔值
@@ -225,7 +225,7 @@ endsWith()：判断参数字符串是否在原字符串的尾部，返回布尔�
 repeat() 将字符串重复n次，返回一个新的字符串
 ```
 
-##### Set数据结构
+## Set数据结构
 ```apl
 类似于数组，但是成员的值都是唯一的，没有重复的值。(可以用来做数组去重)
 const s = new Set([1,2,3,4,4]); // 可以接收数组
@@ -237,7 +237,7 @@ s.has(1); has方法根据value判断值是否存在,返回值true,false
 可以使用forEach方法遍历进行取值
 Set方法之间可以使用链式操作 s.add(1).add(2).add(3)
 ```
-##### Node
+## Node
 ```apl
 exports 对模块成员变量导出
 module.exports(obj) 模块成员导出
@@ -245,7 +245,7 @@ module.exports(obj) 模块成员导出
 require 对模块成员导入 
 ```
 
-##### Ajax
+## Ajax
 ```yacas
 创建{let xhr = new XMLHttpRequest()}
 设置请求方式{xhr.open(方式,url)}
@@ -254,18 +254,18 @@ require 对模块成员导入
     xhr.responseText //接收返回数
 }
 ```
-###### get请求参数
+### get请求参数
 ```js
 let parse = 'name=' + name.value + '&pwd='+pwd.value; 
 xhr.open('get','/get?'+parse ); /需要自己拼接
 ```
 
-###### post请求参数
+### post请求参数
 ```apl
 xhr.setRequestHeader('Content-type','application/x-www-form-urlencoded') 设置请求报文
 xhr.send(参数)apl
 ```
-###### 请求参数的格式apl
+### 请求参数的格式apl
 ```apl
 application/x-www-form-urlencoded
 name=zhangsan&age=20&sex=男
@@ -275,7 +275,7 @@ name=zhangsan&age=20&sex=男
 注意:服务器端需引用body-parser模块,并且设置
 bodyParser.json()来解析json
 ```
-###### Ajax状态码
+### Ajax状态码
 ```js
 共有五个
 0:请求已经初始化
@@ -287,7 +287,7 @@ xhr.readyState 获取ajax状态码
 xhr.onreadyStateChange() 监听状态码改变方法
 必须用于xhr.send()方法前
 ```
-###### 错误处理：
+### 错误处理：
 ```js
 xhr.status 获取http状态码
 400:返回结果不是预期的结果
@@ -298,9 +298,9 @@ xhr.onerror = function(){
     alert(‘网络错误，请检查’)
 }
 ```
-###### 注意:
+### 注意:
     IE低版本浏览器下,ajax存在严重的缓存,解决防范为每次请求的url参数不一样即可,所以可以在请求的url后面拼接一个随机参数。
-###### 封装Ajax函数
+### 封装Ajax函数
 ```js
 function ajax(options){
             let defules = {
@@ -363,7 +363,7 @@ function ajax(options){
            }
        })
 ```
-###### 三级联动
+### 三级联动
 ```apl
 1.通过接口获取省份信息
 2.后去下拉框元素
@@ -372,13 +372,13 @@ function ajax(options){
 5.当用户悬着省份时，根据省份id获取城市信息
 6.当用户选择城市时，根据城市id获取县城信息
 ```
-######  模板引擎:
+###  模板引擎:
 ```yacas
 art-template
 具体看官网文档,有使用说明
 template.defaults.imports：开放模板变量
 ```
-##### FormData
+### FormData
 ```js
 可以获取指定表单的所有表单，无需添加额外参数，支持异步上传，但是不支持get请求。
 let formData = new formData（表单）
@@ -394,7 +394,7 @@ form.parse(req,(err,fields,files)=>{
 })
 ```
 
-###### 二进制文件上传
+### 二进制文件上传
 ```js
 file.onchange = function(){
     let form = new FormData();
@@ -404,7 +404,7 @@ file.onchange = function(){
     xhr.send(form);
 }
 ```
-###### 文件上传进度展示
+### 文件上传进度展示
 ```js
 file.onchange =function(){
     xhr.upload.onprogress = function(ev){
@@ -413,7 +413,7 @@ file.onchange =function(){
 }
 ```
 
-##### JSONP代码同源
+### JSONP代码同源
 ```js
 利用script的请求不同源的性质，动态创建标签设置src为请求地址，后端返回字符串形式的函数,客户端就会解析执行函数,前提是需要在请求的script之前创建全局函数
 function jsonp(options){
@@ -432,7 +432,7 @@ function jsonp(options){
 }
 ```
 
-##### CORS跨域资源共享 跨域资源共享
+### CORS跨域资源共享 跨域资源共享
 ```yacas
 在服务端设置响应头header:
 允许那些客户端访问:
@@ -444,14 +444,14 @@ function jsonp(options){
 利用模块 request
 ```
 
-##### Cookie：
+### Cookie：
 ```yacas
 客户端设置:
 withCredentials:true //允许跨域携带cookie
 服务端设置:
 Access-Control-Allow-Credentials:true //允许客户端请求时携带cookie
 ```
-##### $.ajax()
+### $.ajax()
 ```yacas
 type
 url
@@ -462,7 +462,7 @@ success
 error
 ```
 
-###### 发送jsonp
+### 发送jsonp
 ```yacas
 $.ajax({
 url,
@@ -472,7 +472,7 @@ dataType:'jsonp'
 success:
 })
 ```
-##### $.get()、$.post()
+### $.get()、$.post()
 ```js
 发送get或post请求
 $.get(url,form,function(){})
@@ -481,9 +481,9 @@ $.post(url,form,function(){})
 
 ## 例子
 
-##### Todo list
+### Todo list
 
-###### 为todo数据库添加账号
+### 为todo数据库添加账号
 
 - [ ] 使用mongo命令进入数据库
 
@@ -617,132 +617,132 @@ btn.onclick = function(){
 Git是一个版本管理控制系统（缩写vcs），它可以在任何时间点,将文档的状态作为更新记录保存起来，也可以在任何时间点，将更新记录恢复回来。
 ```
 
-##### 使用前配置
+## 使用前配置
 
 在使用git前，需要告诉git你是谁,在向git仓库提交时需要用到
 
-1.配置提交人姓名:
+### 1.配置提交人姓名:
 
    ```yacas
    git config --global user.name 提交人姓名
    ```
 
-2.配置提交人邮箱:
+### 2.配置提交人邮箱:
 
 ```yacas
 git config --global user.email 提交人邮箱
 ```
 
-3.查看git配置信息:
+### 3.查看git配置信息:
 
 ```yacas
 git config --list
 ```
 
-注意
+### 注意
 
 ​	1.如果要对配置信息进行修改,重复上述命令即可。
 
 ​	2.配置只需要执行一次
 
-##### 提交步骤
+## 提交步骤
 
-1.初始化git仓库
+### 1.初始化git仓库
 
 ```yacas
 git init
 ```
 
-2.查看文件状态
+### 2.查看文件状态
 
 ```yacas
 git status
 ```
 
-3.文件列表 追踪文件
+### 3.文件列表 追踪文件
 
 ```yacas
 git add
 git add . // 将目录中的文件全部添加到暂存区
 ```
 
-4.提交信息，向仓库中提交代码
+### 4.提交信息，向仓库中提交代码
 
 ```yacas
 git commit -m 需要提交的信息
 ```
 
-5.查看提交记录
+### 5.查看提交记录
 
 ```yacas
 git log
 ```
 
-##### 恢复记录
+## 恢复记录
 
-1.用暂存区中的文件覆盖工作目录中的文件
+### 1.用暂存区中的文件覆盖工作目录中的文件
 
 ```yacas
 git checkout
 ```
 
-2.将文件从暂存区中删除
+### 2.将文件从暂存区中删除
 
 ```yacas
 git rm --cached
 ```
 
-3.将git仓库中指定的更新记录恢复出来,并且覆盖暂存区和工作目录
+### 3.将git仓库中指定的更新记录恢复出来,并且覆盖暂存区和工作目录
 
 ```yacas
 git rest --hard 之前提交的ID
 ```
 
-##### GIT分支
+## GIT分支
 
-1.查看分支
+### 1.查看分支
 
 ```yacas
 git branch
 ```
 
-2.创建分支
+### 2.创建分支
 
 ```yacas
 git branch 分支名称
 ```
 
-3.切换分支
+### 3.切换分支
 
 ```yacas
 git checkout 分支名称
 ```
 
-4.合并分支
+### 4.合并分支
 
 ```yacas
 git merge 来源分支
 ```
 
-5.删除分支 (分支被合并后才允许被删除) (-D 强制删除)
+### 5.删除分支 (分支被合并后才允许被删除) (-D 强制删除)
 
 ```yacas
 git branch -d 分支名称
 ```
 
-##### 暂时保存更改
+## 暂时保存更改
 
 在git中，可以暂时提取分支上所有的改动并储存,让开发人员得到一个干净的工作副本，临时转向其他工作
 
 使用场景：分支临时切换
 
-1.存储临时改动
+### 1.存储临时改动
 
 ```yacas
 git stash
 ```
 
-2.恢复改动:
+### 2.恢复改动:
 
 ```yacas
 git stash pop
@@ -1084,6 +1084,8 @@ console.log(newobj);
 ```
 
 ### HTTP
+
+#### 创建服务器
 
 ```js
 const http = require('http');

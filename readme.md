@@ -903,6 +903,26 @@ npm install git+https://git@github.com:lurongtao/gp-project.git
 npm install git+ssh://git@github.com:lurongtao/gp-project.git
 ```
 
+## NPM脚本
+
+npm允许在package.json文件里面,使用scripts字段定义脚本
+
+执行多个脚本，要清楚先后顺序，如果是并行执行可以使用&链接
+
+```json
+{
+	"scripts":{
+		"build":"node build.js"
+	}
+}
+```
+
+执行
+
+```
+npm run build
+```
+
 
 
 ## cross-env 运行跨平台设置和使用环境变量的脚本
@@ -952,6 +972,19 @@ nrm test
 ```
 
 ## LOG4j 日志保持第三方模块
+
+```js
+const log4js = require('log4js');
+log4js.configure({
+    appenders: { cheese: { type: "file", filename: "cheese.log" } },
+    categories: { default: { appenders: ["cheese"], level: "debug" } }
+});
+const logger = log4js.getLogger("cheese");
+
+module.exports = logger;
+```
+
+
 
 ## 内置模块
 
@@ -1108,6 +1141,104 @@ server.listen(8090,'localhost',()=>{
 
 ```yacas
 node --inspect --inspect-brk app.js
+```
+
+#### 接收数据
+
+```js
+const http = require('http');
+const logger = require('./utils/log');
+const querystring = require('querystring')
+const server = http.createServer((req,res)=>{
+    // logger.debug(res)
+    let data = ''
+    req.on('data',(result)=>{
+        data += result
+    })
+    req.on('end',()=>{
+        res.writeHead(200,{
+            'content-type':'application/json;charset=utf-8'
+        })
+        res.write(JSON.stringify(querystring.parse(data)))
+        res.end()
+    })
+    
+})
+server.listen(3381,()=>{
+    console.log('启动成功');
+})
+```
+
+#### 接口调试工具
+
+```
+insomnia
+```
+
+#### GET方法
+
+```js
+const http = require('http');
+const logger = require('./utils/log');
+const querystring = require('querystring')
+const https = require('https')
+const server = http.createServer((req,res)=>{
+   https.get('https://www.xiaomiyoupin.com/mtop/market/cat/list',(result)=>{
+       let data = ''
+       result.on('data',(cheuk)=>{
+            data += cheuk
+       })
+       result.on('end',()=>{
+           res.writeHead(200,{
+               'content-type':'application/json;charset=utf-8'
+           })
+           res.write(data)
+           res.end()
+       })
+   })
+})
+server.listen(3381,()=>{
+    console.log('启动成功');
+})
+```
+
+#### POST方法
+
+```js
+const http = require('http')
+const https = require('https')
+const querystring = require('querystring')
+const logger = require('./utils/log')
+let data = JSON.stringify({
+  accesstoken: 'Buy the milk'
+})
+let options = {
+  protocol:'https:',
+  hostname: 'cnodejs.org',
+  port: 443,
+  path: '/api/v1/message/mark_all',
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Content-Length': data.length
+  }
+}
+
+const server = http.createServer((req,res)=>{
+  const request = https.request(options,(result)=>{
+    result.on('data',(d)=>{
+      logger.debug(d);
+    })
+  })
+  request.write(data)
+  request.end()
+
+  res.end()
+})
+
+server.listen(3381,()=>{
+  console.log('启动成功');
+})
 ```
 
 

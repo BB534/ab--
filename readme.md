@@ -1241,6 +1241,174 @@ server.listen(3381,()=>{
 })
 ```
 
+#### 爬虫  cheerio数据筛选
+
+```js
+const http = require('http');
+const https = require('https')
+const cheerio = require('cheerio');
+const logger = require('./utils/log')
+const fs = require('fs')
+const path = require('path')
+let file = path.resolve(__dirname,'./file.txt')
+function getDom(data){
+  const $ = cheerio.load(data)
+  $('.list dl dd').each((index,el)=>{
+    console.log(index);
+  })
+}
+const server = http.createServer((req,res)=>{
+  let data = ''
+  https.get('https://www.xbiquge.la/10/10489/',(result)=>{
+    result.on('data',(cheuk)=>{
+      data += cheuk
+    })
+
+    result.on('end',()=>{
+      getDom(data)
+    })
+  })
+})
+
+server.listen(3381,()=>{
+  console.log('localhost:3381');
+})
+```
+
+### Event 事件对象 
+
+```js
+cosnt EventEmitter = require('events') //返回一个类
+class myEventEmitter extends EventREmitter{}
+const event = new myEventEmitter() // 创建
+
+event.on('paly',(value)=>{
+    console.log(value)
+}) // 创建监听事件
+
+evemt.emit('paly','阿逼'); // 调用 打印阿逼
+```
+
+### Fs 文件操作
+
+#### mkdir 创建文件目录
+
+```js
+const fs = require('fs')
+fs.mkdir('logo',(err)=>{
+    if(err) thow err; // 异常抛出
+    console.log('写入成功')
+})
+```
+
+#### rename 修改文件目录
+
+```js
+const fs = require('fs')
+fs.rename('./logo','./logos',(err)=>{
+    if(err) thow err;
+    console.log('文件名修改成功')
+})
+```
+
+#### rmdir 删除文件目录
+
+```js
+const fs = require('fs')
+fs.rmdir('./logos',(err)=>{
+    if(err) thow err;
+    console.log('删除成功')
+})
+```
+
+#### readdir 读取文件目录
+
+```js
+const fs = require('fs')
+fs.readdir('./logos',(err,data)=>{
+    if(err) thow err;
+    console.log(data)
+})
+```
+
+#### writeFile 写入文件
+
+```js
+const fs = require('fs')
+fs.writeFile('./logos/log.log','hell/nword',(err)=>{
+    if(err) thow err;
+    console.log('写入成功')
+})
+```
+
+#### appendFile 修改文件(追加)
+
+```js
+const fs = require('fs')
+fs.appendFile('./logos/log.log','!!!!',(err)=>{
+    if(err) thow err;
+    console.log('写入成功')
+})
+```
+
+#### unlink 删除文件
+
+```js
+const fs = require('fs')
+fs.unlink('./logos/log.log',(err)=>{
+    if(err) thow err;
+    console.log('删除成功')
+})
+```
+
+#### readFile 读取文件
+
+```js
+const fs = require('fs')
+fs.readFile('./logos/log.log',(err,data)=>{
+    if(err) thow err;
+    console.log(data)
+})
+
+
+fs.readFile('./logos/log.log','utf-8',(err,data)=>{
+    if(err) thow err;
+    console.log(data)
+})
+
+fs.readFile('./logos/log.log',(err,data)=>{
+    if(err) thow err;
+    console.log(data.toString())
+})
+```
+
+#### 循环读取目录下文件
+
+```js
+function reaDir(dir){
+  fs.readdir(dir,(err,content)=>{
+    content.forEach((value,index)=>{
+      if(value != 'node_modules'){
+        let joinDir = `${dir}/${value}`;
+        // 获取属性
+        fs.stat(joinDir,(err,stats)=>{
+          // 判断是否是文件夹
+          if(stats.isDirectory()){
+            reaDir(joinDir)
+          }else{
+            fs.readFile(joinDir,'utf-8',(err,data)=>{
+              console.log(data);
+            })
+          }
+        })
+      }
+    })
+  })
+}
+
+reaDir('./')
+```
+
 
 
 ## 1.文件写入(fs)

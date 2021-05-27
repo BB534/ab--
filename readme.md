@@ -837,6 +837,8 @@ git忽略清单文件名称
 
 # Node.js
 
+https://lurongtao.gitee.io/felixbooks-gp19-node.js/basics/01-Node.js%E5%9F%BA%E7%A1%80.html 文档
+
 ## NVM 版本管理器
 
 ```js
@@ -1241,6 +1243,47 @@ server.listen(3381,()=>{
 })
 ```
 
+#### http-proxy-middware 跨域代理
+
+```js
+const http = require('http')
+const proxy = require('http-proxy-middleware')
+
+http.createServer((req, res) => {
+  let url = req.url
+
+  res.writeHead(200, {
+    'Access-Control-Allow-Origin': '*'
+  })
+
+  if (/^\/api/.test(url)) {
+    let apiProxy = proxy('/api', { 
+      target: 'https://m.lagou.com',
+      changeOrigin: true,
+      pathRewrite: {
+        '^/api': ''
+      }
+    })
+
+    // http-proy-middleware 在Node.js中使用的方法
+    apiProxy(req, res)
+  } else {
+    switch (url) {
+      case '/index.html':
+        res.end('index.html')
+        break
+      case '/search.html':
+        res.end('search.html')
+        break
+      default:
+        res.end('[404]page not found.')
+    }
+  }
+}).listen(8080)
+```
+
+
+
 #### 爬虫  cheerio数据筛选
 
 ```js
@@ -1443,20 +1486,37 @@ readStream
 ## readline 逐行读取
 
 ```js
-const readline = require('readline');
+const fs = require('fs')
+const readline = require('readline')
 
+// 创建一个标准输入和输出
 const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
+    input:process.stdin,
+    output:process.stdout
+})
 
-rl.question('你如何看待 Node.js 中文网？', (answer) => {
-  // TODO：将答案记录在数据库中。
-  console.log(`感谢您的宝贵意见：${answer}`);
-
-  rl.close();
-});
+// 等待输入结果,如果不输入就一直停顿
+rl.question('你如何看待我帅这回事？',(value)=>{
+  console.log(`感谢您的宝贵意见:${value}`);
+  rl.close()
+})
 ```
+
+## crypto 加密
+
+```js
+const crypto = require('crypto')
+
+let pwd = 'abg123gas'
+
+const hash = crypto.createHmac('sha256',pwd)
+              .update(pwd)
+              .digest('hex')
+
+console.log(hash);
+```
+
+## Express
 
 
 

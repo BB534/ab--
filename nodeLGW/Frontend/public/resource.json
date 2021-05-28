@@ -1,0 +1,122 @@
+{
+    "header": [
+        " *   ",
+        " *   文件描述：本文件为网页资源信息",
+        " *   success字段为下载保存成功的资源;failures字段则为下载保存失败的资源URL",
+        " *   success字段为标准树结构，每一层资源父子关系、URL和保存路径清晰明了",
+        " *   本文件仅为记录检测到的网页资源以便于调试，非专业人员可将本文件删除",
+        " *   详细介绍请参考: https://bazhan.me/faq",
+        " *   "
+    ],
+    "success": [
+        {
+            "url": "https://adminlte.io/themes/v3/starter.html",
+            "path": "index.html",
+            "children": [
+                {
+                    "url": "https://adminlte.io/themes/v3/dist/img/user1-128x128.jpg",
+                    "path": "images/user1-128x128.jpeg"
+                },
+                {
+                    "url": "https://adminlte.io/themes/v3/dist/img/user8-128x128.jpg",
+                    "path": "images/user8-128x128.jpeg"
+                },
+                {
+                    "url": "https://adminlte.io/themes/v3/dist/img/user3-128x128.jpg",
+                    "path": "images/user3-128x128.jpeg"
+                },
+                {
+                    "url": "https://adminlte.io/themes/v3/dist/img/AdminLTELogo.png",
+                    "path": "images/AdminLTELogo.png"
+                },
+                {
+                    "url": "https://adminlte.io/themes/v3/dist/img/user2-160x160.jpg",
+                    "path": "images/user2-160x160.jpeg"
+                },
+                {
+                    "url": "https://adminlte.io/themes/v3/plugins/jquery/jquery.min.js",
+                    "path": "js/jquery.min.js"
+                },
+                {
+                    "url": "https://adminlte.io/themes/v3/plugins/bootstrap/js/bootstrap.bundle.min.js",
+                    "path": "js/bootstrap.bundle.min.js"
+                },
+                {
+                    "url": "https://adminlte.io/themes/v3/dist/js/adminlte.min.js",
+                    "path": "js/adminlte.min.js"
+                },
+                {
+                    "url": "https://adminlte.io/themes/v3/plugins/fontawesome-free/css/all.min.css",
+                    "path": "css/all.min.css",
+                    "children": [
+                        {
+                            "url": "https://adminlte.io/themes/v3/plugins/fontawesome-free/webfonts/fa-brands-400.eot",
+                            "path": "fonts/fa-brands-400.eot"
+                        },
+                        {
+                            "url": "https://adminlte.io/themes/v3/plugins/fontawesome-free/webfonts/fa-brands-400.woff2",
+                            "path": "fonts/fa-brands-400.woff2"
+                        },
+                        {
+                            "url": "https://adminlte.io/themes/v3/plugins/fontawesome-free/webfonts/fa-brands-400.woff",
+                            "path": "fonts/fa-brands-400.woff"
+                        },
+                        {
+                            "url": "https://adminlte.io/themes/v3/plugins/fontawesome-free/webfonts/fa-brands-400.ttf",
+                            "path": "fonts/fa-brands-400.ttf"
+                        },
+                        {
+                            "url": "https://adminlte.io/themes/v3/plugins/fontawesome-free/webfonts/fa-brands-400.svg#fontawesome",
+                            "path": "images/fa-brands-400.svg"
+                        },
+                        {
+                            "url": "https://adminlte.io/themes/v3/plugins/fontawesome-free/webfonts/fa-regular-400.eot",
+                            "path": "fonts/fa-regular-400.eot"
+                        },
+                        {
+                            "url": "https://adminlte.io/themes/v3/plugins/fontawesome-free/webfonts/fa-regular-400.woff2",
+                            "path": "fonts/fa-regular-400.woff2"
+                        },
+                        {
+                            "url": "https://adminlte.io/themes/v3/plugins/fontawesome-free/webfonts/fa-regular-400.woff",
+                            "path": "fonts/fa-regular-400.woff"
+                        },
+                        {
+                            "url": "https://adminlte.io/themes/v3/plugins/fontawesome-free/webfonts/fa-regular-400.ttf",
+                            "path": "fonts/fa-regular-400.ttf"
+                        },
+                        {
+                            "url": "https://adminlte.io/themes/v3/plugins/fontawesome-free/webfonts/fa-regular-400.svg#fontawesome",
+                            "path": "images/fa-regular-400.svg"
+                        },
+                        {
+                            "url": "https://adminlte.io/themes/v3/plugins/fontawesome-free/webfonts/fa-solid-900.eot",
+                            "path": "fonts/fa-solid-900.eot"
+                        },
+                        {
+                            "url": "https://adminlte.io/themes/v3/plugins/fontawesome-free/webfonts/fa-solid-900.woff2",
+                            "path": "fonts/fa-solid-900.woff2"
+                        },
+                        {
+                            "url": "https://adminlte.io/themes/v3/plugins/fontawesome-free/webfonts/fa-solid-900.woff",
+                            "path": "fonts/fa-solid-900.woff"
+                        },
+                        {
+                            "url": "https://adminlte.io/themes/v3/plugins/fontawesome-free/webfonts/fa-solid-900.ttf",
+                            "path": "fonts/fa-solid-900.ttf"
+                        },
+                        {
+                            "url": "https://adminlte.io/themes/v3/plugins/fontawesome-free/webfonts/fa-solid-900.svg#fontawesome",
+                            "path": "images/fa-solid-900.svg"
+                        }
+                    ]
+                },
+                {
+                    "url": "https://adminlte.io/themes/v3/dist/css/adminlte.min.css",
+                    "path": "css/adminlte.min.css"
+                }
+            ]
+        }
+    ],
+    "failures": []
+}

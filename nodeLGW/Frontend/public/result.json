@@ -1,0 +1,59 @@
+{
+    "header": [
+        " *   ",
+        " *   文件描述：本文件为请求参数，包括不限于网址、请求头、响应头、COOKIE、Referer、UserAgent",
+        " *   本文件仅为记录详细请求参数便于调试，非专业人员可将本文件删除",
+        " *   详细介绍请参考: https://bazhan.me/faq",
+        " *   "
+    ],
+    "directory": "adminlte-io-b9fjco9a",
+    "options": {
+        "url": "https://adminlte.io/themes/v3/starter.html",
+        "index": "index.html",
+        "domain": "adminlte.io",
+        "origin": "https://adminlte.io",
+        "ipaddress": "104.248.229.9",
+        "originURL": "https://adminlte.io/themes/v3/starter.html",
+        "filenameGenerator": "byType",
+        "request": {
+            "headers": {
+                "accept": "text/html,*/*",
+                "accept-language": "zh-CN,zh;q=0.9",
+                "accept-encoding": "gzip",
+                "cache-control": "no-cache",
+                "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36",
+                "x-scraper-website": "https://bazhan.me/"
+            }
+        },
+        "response": {
+            "statusCode": 200,
+            "headers": {
+                "server": "nginx/1.15.0",
+                "date": "Fri, 28 May 2021 14:49:08 GMT",
+                "content-type": "text/html; charset=utf-8",
+                "last-modified": "Mon, 22 Mar 2021 11:10:38 GMT",
+                "transfer-encoding": "chunked",
+                "connection": "close",
+                "vary": "Accept-Encoding",
+                "etag": "W/\"60587b2e-3418\"",
+                "x-frame-options": "SAMEORIGIN",
+                "x-xss-protection": "1; mode=block",
+                "x-content-type-options": "nosniff",
+                "content-encoding": "gzip"
+            }
+        }
+    },
+    "user": {
+        "isWhite": false
+    },
+    "formatter": [
+        "css",
+        "html",
+        "javascript"
+    ],
+    "time": {
+        "start": 1622213347306,
+        "end": 1622213359196,
+        "spend": 11.89
+    }
+}

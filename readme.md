@@ -1,3 +1,5 @@
+
+
 # 黑马进阶记录
 
 ## **各种事件**
@@ -548,8 +550,9 @@ NProgress.done()
 
 - GET ： 获取数据
 - POST：添加数据
-- PUT：更新数据
+- PUT：覆盖修改
 - DELETE：删除数据
+- PATCH  递增修改
 
 ```js
   // 获取某一个用户具体信息的路由
@@ -574,6 +577,16 @@ app.put('/users/:id',(req,res)=>{
     res.send(`当前我们是在修改id为${id}用户信息`);
 })
 ```
+
+```js
+// 修改某一个用户信息
+app.patch('/users/:id',(req,res)=>{
+    const id = req.params.id
+    res.send(`当前我们是在修改id为${id}用户信息`);
+})
+```
+
+
 
 # XML
 
@@ -1517,6 +1530,317 @@ console.log(hash);
 ```
 
 ## Express
+
+### 设置路由
+
+```js
+const express = require('express')
+const app = express()
+// 前端路由
+const indexRoute = require('./route/index')
+
+// 拦截前端路由
+app.use('/',indexRoute)
+
+app.listen(3381,()=>{
+  console.log('localhost:3381');
+})
+```
+
+```js
+const express = require('express')
+
+const indexRoute = express.Router();
+
+indexRoute.get('/',(req,res)=>{
+    res.send('欢迎访问首页')
+})
+
+
+indexRoute.get('/index',(req,res)=>{
+  res.send('欢迎来到首页')
+})
+
+module.exports = indexRoute
+```
+
+## MongoDB
+
+### 安装
+
+```
+// 下载地址
+www.mongodb.org/downloads
+// 创建文件
+mongod --dbpath d:\data\db
+// 查看
+mongo
+
+```
+### 术语/概念
+|  术语   |  概念    |
+| ---- | ---- |
+|   database   |  数据库    |
+|   collection   |   数据库表/集合   |
+|   document   |  数据记录行/文档    |
+|   field   |   数据字段/域   |
+|      |  表链接不支持    |
+|   primary key   |   主键   |
+|      |      |
+
+### 概念
+
+```
+一个mongodb中可以建立多个数据库。
+
+MongoDB的默认数据库为"db"，该数据库存储在data目录中。
+
+MongoDB的单个实例可以容纳多个独立的数据库，每一个都有自己的集合和权限，不同的数据库也放置在不同的文件中。
+
+集合存在于数据库中，集合没有固定的结构，这意味着你在对集合可以插入不同格式和类型的数据，但通常情况下我们插入集合的数据都会有一定的关联性。
+
+文档是一个键值(key-value)对(即BSON)。MongoDB 的文档不需要设置相同的字段，并且相同的字段不需要相同的数据类型，这与关系型数据库有很大的区别，也是 MongoDB 非常突出的特点。
+
+一个简单的文档例子如下：
+{"genres": ["犯罪","剧情" ],"title": "肖申克的救赎"}
+
+```
+
+### 常用命令
+
+```mysql
+1.Help查看命令提示
+help
+db.help()
+db.test.help()
+db.test.find().help()
+
+2.创建/切换数据库
+use music
+
+3.查询数据库
+show dbs
+
+4.查看当前使用的数据库
+db/db.getName()
+
+5.显示当前DB状态
+db.stats()
+
+6.查看当前DB版本
+db.version()
+
+7.查看当前DB的链接机器地址
+db.getMongo()
+
+8.删除数据库
+db.dropDatabase()
+
+```
+
+### 集合操作命令
+
+```mysql
+1.创建一个集合
+db.createCollection("collName", {size: 20, capped: true, max: 100});
+db.collName.isCapped(); //判断集合是否为定容量
+
+2.得到指定名称的集合
+db.getCollection("account");
+
+3.得到当前db的所有集合
+db.getCollectionNames();
+
+4.显示当前db所有集合的状态
+db.printCollectionStats();
+
+```
+
+### 增删改查
+
+```mysql
+1.添加
+db.users.save({name: ‘zhangsan', age: 25, sex: true});
+
+2.修改
+db.users.update({age: 25}, {$set: {name: 'changeName'}}, false, true);
+              
+相当于：update users set name = ' changeName' where age = 25;
+db.users.update({name: 'Lisi'}, {$inc: {age: 50}}, false, true);
+相当于：update users set age = age + 50 where name = 'Lisi';
+db.users.update({name: 'Lisi'}, {$inc: {age: 50}, $set: {name: 'hoho'}}, false, true);
+相当于：update users set age = age + 50, name = 'hoho'  where name = 'Lisi';
+
+3.删除
+db.users.remove({age: 132});
+```
+
+```mysql
+（1）查询所有记录
+db.userInfo.find();
+相当于：select* from userInfo;
+
+（2）查询去重后数据
+db.userInfo.distinct("name");
+相当于：select distict name from userInfo;
+
+（3）查询age = 22的记录
+db.userInfo.find({"age": 22});
+相当于： select * from userInfo where age = 22;
+
+（4）查询age > 22的记录
+db.userInfo.find({age: {$gt: 22}});
+相当于：select * from userInfo where age > 22;
+
+（5）查询age < 22的记录
+db.userInfo.find({age: {$lt: 22}});
+相当于：select * from userInfo where age < 22;
+
+6）查询age >= 25的记录
+db.userInfo.find({age: {$gte: 25}});
+相当于：select * from userInfo where age >= 25;
+
+（7）查询age <= 25的记录
+db.userInfo.find({age: {$lte: 25}});
+
+（8）查询age >= 23 并且 age <= 26
+db.userInfo.find({age: {$gte: 23, $lte: 26}});
+
+（9）查询name中包含 mongo的数据
+db.userInfo.find({name: /mongo/});
+//相当于%%
+select * from userInfo where name like '%mongo%';
+
+（10）查询name中以mongo开头的
+db.userInfo.find({name: /^mongo/});
+相当于： select * from userInfo where name like 'mongo%';
+
+（11）查询指定列name、age数据
+db.userInfo.find({}, {name: 1, age: 1});
+相当于：select name, age from userInfo;
+
+（12）查询指定列name、age数据, age > 25
+db.userInfo.find({age: {$gt: 25}}, {name: 1, age: 1});
+相当于：select name, age from userInfo where age >25;
+
+（13）按照年龄排序
+升序：db.userInfo.find().sort({age: 1});
+降序：db.userInfo.find().sort({age: -1});
+
+（14）查询name = zhangsan, age = 22的数据
+db.userInfo.find({name: 'zhangsan', age: 22});
+相当于：select * from userInfo where name = 'zhangsan' and age = ’22';
+
+（15）查询前5条数据
+db.userInfo.find().limit(5);
+相当于：select top 5 * from userInfo;
+
+（16）查询10条以后的数据
+db.userInfo.find().skip(10);
+相当于：select * from userInfo where id not in (select top 10 * from userInfo);
+
+（17）查询在5-10之间的数据
+db.userInfo.find().limit(10).skip(5);
+
+（18）or与 查询
+db.userInfo.find({$or: [{age: 22}, {age: 25}]});
+相当于：select * from userInfo where age = 22 or age = 25;
+
+（19）查询第一条数据
+db.userInfo.findOne();
+相当于：select top 1 * from userInfo;db.userInfo.find().limit(1);
+
+（20）查询某个结果集的记录条数
+db.userInfo.find({age: {$gte: 25}}).count();
+相当于：select count(*) from userInfo where age >= 20;
+
+```
+
+## Webpack
+
+```
+安装 yarn add webpack
+新建一个源代码文件夹 src
+安装模块
+yarn add webpack-cli
+```
+
+### 配置文件 webpack.config.js
+
+```js
+const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyPlugin = require("copy-webpack-plugin");
+
+// 暴露模块
+module.exports = {
+  // 配置编译环境 生产 production 开发 development
+  mode:'development',
+  // 创建sourceMap
+  devtools:'source-map',
+  // 配置入口
+  entry:{
+    app:'./src/app.js'
+  },
+  // 配置出口
+  output:{
+    path:path.join(__dirname,'./dist'),
+    filename:'app.js'
+  },
+  // 配置插件
+  plugins: [
+    new HtmlWebpackPlugin({
+      template:path.join(__dirname,'./public/index.html'),
+      filename:'index.html',
+      inject:true,
+    }),
+    new CopyPlugin({
+      patterns:[
+        // { from: "source", to: "dest" },
+      ]
+    })
+  ],
+  // 配置启动服务
+  devServer: {
+    contentBase: path.join(__dirname, './dist'),
+    compress: true,
+    port: 3381,
+  },
+}
+```
+
+### 编译
+
+```js
+npx webpack
+```
+
+### 启动模块
+
+```js
+webpack-dev-server
+```
+
+
+
+## 实战拉勾网
+
+### 架构
+
+```
+前端 (Frontend)
+前端工程化环境 （webpack）
+CSS 预处理工具 (sass)
+JS模块化:ES Module,CommonJS Module
+JS库：JQuery
+SPA：SINGLE PAGE APPLICATION,路由SME-Router
+UI组件库：Bootstrap(AdminLTE)
+
+后端(Backend)
+node.js
+Express
+MongoDB(Mongoose 驱动)
+```
 
 
 

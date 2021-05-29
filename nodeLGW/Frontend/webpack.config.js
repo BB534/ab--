@@ -1,39 +1,64 @@
 const path = require('path')
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CopyPlugin = require("copy-webpack-plugin");
-
-// 暴露模块
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const CopyPlugin = require('copy-webpack-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 module.exports = {
-  // 配置编译环境 生产 production 开发 development
-  mode:'development',
-  // 创建sourceMap
-  devtools:'source-map',
-  // 配置入口
+  // 设置模式：开发模式
+  mode: 'development',
+  devtool: 'source-map',
+  // 入口
   entry:{
-    app:'./src/app.js'
+    'js/app' : './src/app.js' //要打包的文件路径
   },
-  // 配置出口
+  // 出口文件
   output:{
-    path:path.join(__dirname,'./dist'),
-    filename:'app.js'
+    path:path.join(__dirname,'./dist'),  //打包好放置的文件路径
+    filename:'[name].js' //把打包好的文件放进js文件夹
   },
   // 配置插件
-  plugins: [
+  plugins:[
+    // 生成 HTML文件,渲染到页面
     new HtmlWebpackPlugin({
-      template:path.join(__dirname,'./public/index.html'),
-      filename:'index.html',
-      inject:true,
+      template: path.join(__dirname, './public/index.html'),
+      filename: 'index.html',
+      inject: true
     }),
+    // 拷贝文件或目录，修改最终输出路径的配置
     new CopyPlugin({
-      patterns:[
-        // { from: "source", to: "dest" },
+      patterns: [
+        {
+          from: './public/*.ico',
+          to: path.join(__dirname, './dist/favicon.ico'),
+        },
+        {
+          from: './public/libs',
+          to: path.join(__dirname, './dist/libs'),
+        }
       ]
-    })
+    }),
+    // 覆盖更新dist
+    new CleanWebpackPlugin()
   ],
-  // 配置启动服务
-  devServer: {
+  // 配置server
+  devServer:{
     contentBase: path.join(__dirname, './dist'),
     compress: true,
-    port: 3381,
+    port: 8080,
   },
+
+  // 前端渲染模板
+  module: {
+    rules: [
+      {
+        test: /\.art$/,
+        use: {
+          loader: 'art-template-loader',
+          options: {
+            escape: false
+          }
+        }
+      },
+    ]
+  }
 }
+

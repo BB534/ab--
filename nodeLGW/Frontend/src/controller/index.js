@@ -4,6 +4,7 @@ import usersTpl from '../views/users.art'
 const htmlIndex = indexTpl({})
 const htmlSingin = singinTpl({})
 
+// 登录
 const _handleSubmit = (router)=>{
     // 获取事件对象
     return (e)=>{
@@ -12,6 +13,22 @@ const _handleSubmit = (router)=>{
         router.go('/index')
     }
 }
+
+// 添加用户
+const _usersSave = ()=>{
+    const $usersClose = $('#users-close')
+    let data = $('#usersSave-form').serialize();
+    // 表单请求事件
+    $.ajax({
+        type:'POST',
+        url:'',
+        data,
+        beforeSend,
+        success
+    })
+    $usersClose.click();
+}
+
 const indexRoute = (router)=>{
     return (req,res,next) => {
         res.render(htmlIndex)
@@ -19,6 +36,7 @@ const indexRoute = (router)=>{
         $(window,'.wrapper').resize()
         let usersHtml = usersTpl()
         $('.content').html(usersHtml)
+        $('#users-save').on('click',_usersSave)
     }
 }
 

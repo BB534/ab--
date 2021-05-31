@@ -1,10 +1,10 @@
 import indexTpl from '../views/index.art'
 import singinTpl from '../views/singin.art'
 import usersTpl from '../views/users.art'
-const htmlIndex = indexTpl({})
-const htmlSingin = singinTpl({})
-
+import loadingTpl from '../views/loading.art'
+import usersListTpl from '../views/users-list.art'
 // 登录
+
 const _handleSubmit = (router)=>{
     // 获取事件对象
     return (e)=>{
@@ -21,21 +21,37 @@ const _usersSave = ()=>{
     // 表单请求事件
     $.ajax({
         type:'POST',
-        url:'',
+        url:'/api/users/userSave',
         data,
-        beforeSend,
-        success
+        success:function(data){
+            console.log(data);
+        }
     })
     $usersClose.click();
 }
 
+const _userList = ()=>{
+    $.ajax({
+        type:'get',
+        url:"/api/users/list",
+        success:function(result){
+            $('#users-list').html(usersListTpl({
+                data:result.data
+            }))
+        }
+    })
+}
+
 const indexRoute = (router)=>{
     return (req,res,next) => {
-        res.render(htmlIndex)
+        res.render(indexTpl())
         // 调用window.resize，让页面撑满整个屏幕
         $(window,'.wrapper').resize()
-        let usersHtml = usersTpl()
-        $('.content').html(usersHtml)
+        //页面填充
+        $('#content').html(usersTpl())
+        // 用户数据渲染
+        _userList()
+        // 添加事件
         $('#users-save').on('click',_usersSave)
     }
 }
@@ -43,7 +59,7 @@ const indexRoute = (router)=>{
 // 登录页面
 const singinRoute = (router)=>{
     return (req,res,next) => {
-        res.render(htmlSingin)
+        res.render(singinTpl())
          // 绑定点击事件
          $('#sginSubmit').on('submit',_handleSubmit(router))
     }

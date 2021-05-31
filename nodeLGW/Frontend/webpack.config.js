@@ -39,12 +39,20 @@ module.exports = {
     // 覆盖更新dist
     new CleanWebpackPlugin()
   ],
+
+
   // 配置server
   devServer:{
     contentBase: path.join(__dirname, './dist'),
     compress: true,
     port: 8080,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3000',
+      },
+    },
   },
+
 
   // 前端渲染模板
   module: {
@@ -63,6 +71,8 @@ module.exports = {
         loaders: ['style-loader', 'css-loader'], // 先解析我们的css进js，然后再从js中提取
       }
     ]
-  }
+  },
+
+  
 }
 

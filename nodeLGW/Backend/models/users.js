@@ -14,8 +14,13 @@ const singup = ({username,password}) => {
     return users.save()
 }
 
+const userList = ()=>{
+  // 查询数据并且倒序
+  return usersModel.find().sort({_id:-1})
+}
 
 module.exports = {
   singup,
-  usersOne
+  usersOne,
+  userList
 }

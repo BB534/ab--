@@ -14,13 +14,21 @@ const singup = ({username,password}) => {
     return users.save()
 }
 
+// 列表查询
 const userList = ()=>{
   // 查询数据并且倒序
   return usersModel.find().sort({_id:-1})
 }
 
+// 删除ID
+
+const remove = id =>{
+   return usersModel.deleteOne({_id:id})
+}
+
 module.exports = {
   singup,
   usersOne,
-  userList
+  userList,
+  remove
 }

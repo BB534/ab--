@@ -3,7 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
+var cookieSession = require('cookie-session')
 var app = express();
 
 const { userRouter } = require('../Backend/routes/users')
@@ -12,11 +12,17 @@ const { userRouter } = require('../Backend/routes/users')
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+app.use(cookieSession({
+  name: 'session',
+  keys: ['key1', 'key2']
+}))
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public')))
+
 
 // 设置api请求拦截中间件
 app.use('/api/users',userRouter)

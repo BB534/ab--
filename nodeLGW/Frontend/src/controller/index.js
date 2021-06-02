@@ -1,24 +1,13 @@
 import indexTpl from '../views/index.art'
-import singinTpl from '../views/singin.art'
 import usersTpl from '../views/users.art'
 import loadingTpl from '../views/loading.art'
 import usersListTpl from '../views/users-list.art'
-import usersPageTpl from '../views/users-pages.art'
-
+import router from '../routes'
+import toolPage from '../tools/pageClass'
+import page from '../databas/page'
 
 const pageSize  = 5;
-let  curPage = 1;
 let listData = [];
-
-// 登录
-const _handleSubmit = (router)=>{
-    // 获取事件对象
-    return (e)=>{
-        // 阻止提交表单默认事件
-        e.preventDefault()
-        router.go('/index')
-    }
-}
 
 // 添加用户
 const _usersSave = ()=>{
@@ -45,8 +34,8 @@ const _loadOne = ()=>{
         // async:false, //关闭异步
         success:function(result){
             listData = result.data
-            _usersPage(listData)
-            _userList(curPage)
+            toolPage(listData,pageSize)
+            _userList(page.curPage)
         }
     })
 }
@@ -60,78 +49,82 @@ const _userList = (pageOne)=>{
 
 }
 
-const _setPageActive = (index)=>{
-    $('#users-page #page-body li:not(:first,:last)')
-    .eq(index -1)
-    .addClass('active')
-    .siblings()
-    .removeClass('active');
+// 观察者模式通讯
+const _subscribe = ()=>{
+    $('body').on('changeCurPage',(e,index)=>{
+        _userList(page.curPage)
+    })
 }
 
-// 分页渲染
-const _usersPage = (data)=>{
-
-    const tool = data.length;
-    const pagedCount = Math.ceil(tool / pageSize);
-    const pageArray = new Array(pagedCount)
-    const htmlPage = usersPageTpl({
-        pageArray
+const _methods = ()=>{
+    // 代理方式绑定删除事件
+    $('#users-list').on('click','.removeId',function(){
+        $.ajax({
+            url:'/api/users/remove',
+            type:'delete',
+            data:{
+                id:$(this).data('id')
+            },
+            success:function(result){
+                _loadOne()
+                // 计算页码是否是最后一页
+                const isLastPage = Math.ceil(listData.length / pageSize) === page.curPage
+                const restOne = listData.length % pageSize === 1
+                const notChildPage = page.curPage > 0
+                if(isLastPage && restOne && notChildPage){
+                    page.setcurPage(page.curPage -1)
+                }
+            }
+        })
     })
-    $('#users-page').html(htmlPage)
-    _setPageActive(curPage)
+    
+
+    //  登出
+    $('#user-out').on('click',()=>{
+        $.ajax({
+            url:'/api/users/logout',
+            success:function(data){
+                if(data.desc){
+                    location.reload()
+                }
+            }
+        })
+    })
+
+    // 添加事件
+    $('#users-save').on('click',_usersSave)
 }
 
 const indexRoute = (router)=>{
-    return (req,res,next) => {
+    const index = (req,res)=>{
         res.render(indexTpl())
         // 调用window.resize，让页面撑满整个屏幕
         $(window,'.wrapper').resize()
         // 页面填充
         $('#content').html(usersTpl())
-        // 代理方式绑定删除事件
-        $('#users-list').on('click','.removeId',function(){
-            $.ajax({
-                url:'/api/users/remove',
-                type:'delete',
-                data:{
-                    id:$(this).data('id')
-                },
-                success:function(result){
-                    _loadOne()
-                    // 计算页码是否是最后一页
-                    const isLastPage = Math.ceil(listData.length / pageSize) === curPage
-                    const restOne = listData.length % pageSize === 1
-                    const notChildPage = curPage > 0
-                    if(isLastPage && restOne && notChildPage){
-                        curPage--
-                    }
-                }
-            })
-        })
-
-        // 绑定页码事件
-        $('#users-page').on('click','#page-body li:not(:first,:last)',function(){
-            let index = $(this).index()
-            _userList(index)
-            curPage = index
-            _setPageActive(index)
-        })
+        // 首次渲染
         _loadOne()
-        // 添加事件
-        $('#users-save').on('click',_usersSave)
+        // 绑定事件
+        _methods()
+        // 订阅事件
+        _subscribe()
+        
     }
-}
-
-// 登录页面
-const singinRoute = (router)=>{
     return (req,res,next) => {
-        res.render(singinTpl())
-         // 绑定点击事件
-         $('#sginSubmit').on('submit',_handleSubmit(router))
+        $.ajax({
+            type: "get",
+            url: "/api/users/isAuth",
+            dataType: "json",
+            success: function (data) {
+              if(data.desc){
+                index(req,res)
+              }else{
+                router.go('/singin')
+              }
+            }
+        });
     }
 }
 
-export {
-    indexRoute,
-    singinRoute
-}
+
+export default indexRoute

@@ -30,5 +30,5 @@ module.exports = {
   singup,
   usersOne,
   userList,
-  remove
+  remove,
 }

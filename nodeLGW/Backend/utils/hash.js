@@ -16,4 +16,13 @@ const hash = (myPlaintextPassword)=>{
   })
 }
 
+
+const compare = (myPlaintextPassword,hash)=>{
+  return new Promise((resolve,reject)=>{
+    bcrypt.compare(myPlaintextPassword, hash, function(err, result) {
+      resolve(result)
+    });
+  })
+}
 exports.hash = hash
+exports.compare = compare

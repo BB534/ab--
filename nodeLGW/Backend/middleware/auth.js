@@ -1,10 +1,14 @@
+const {verify} = require('../utils/token')
+
 const auth = (req,res,next)=>{
-  if(req.session.username){
+  let token = req.get('X-Access-Token')
+  try{
+    let isToken = verify(token)
     next()
-  }else{
+  }catch(e){
     res.render('fail',{
       data:JSON.stringify({
-        msg:'请登录'
+        msg:'无权限！'
       })
     })
   }

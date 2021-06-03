@@ -21,7 +21,26 @@ onchange：改变
 onsubmit ：表单提交。
 ```
 
+## Jquery观察者模式调用
+
+### 定义：
+
+```
+$('body').on('自定义调用id',(e,data)=>{
+	
+})
+```
+
+### 调用:
+
+```
+$('body').trigger(调用id,要传的数据)
+```
+
+
+
 ## 加载动画
+
 ```asciiarmor
 LottieFiles
 ```
@@ -239,13 +258,7 @@ s.has(1); has方法根据value判断值是否存在,返回值true,false
 可以使用forEach方法遍历进行取值
 Set方法之间可以使用链式操作 s.add(1).add(2).add(3)
 ```
-## Node
-```apl
-exports 对模块成员变量导出
-module.exports(obj) 模块成员导出
-两者都是导出，但是当内初引用地址指向不同时，最终导出结果已module.exports为准
-require 对模块成员导入 
-```
+
 
 ## Ajax
 ```yacas
@@ -481,45 +494,7 @@ $.get(url,form,function(){})
 $.post(url,form,function(){})
 ```
 
-## 例子
-
-### Todo list
-
-### 为todo数据库添加账号
-
-- [ ] 使用mongo命令进入数据库
-
-- [ ] 使用usse todo命令切换到todo数据库
-
-- [ ] 使用db.createUser({user:'itcast',pwd:'itcast',roles:['readWrite']}) 创建数据库账号
-
-- [ ] 使用exit命令退出数据库
-
-- [ ] yarn init 项目初始化
-
-- [ ] yarn add express 添加express依赖
-
-  
-
-  ```js
-  let express = require('express')
-  let app = express();
-  let path = require('path')
-  
-  // 设置静态资源托管
-  app.use(express.static(path.join(__dirname,'public'))
-  
-  app.get('/',(req,res)=>{
-  res.send('欢迎')
-  })
-  
-  app.listen(3000);
-  console.log('启动成功')；
-  ```
-
-
-
-# Ajax全局事件
+### Ajax全局事件
 
 ```js
 // 加载开始事件 必须在document下监听
@@ -1867,62 +1842,64 @@ http://www.mongoosejs.net/
 
 ## Cookie-Session 模块
 
-## 实战拉勾网
+## npm 版本配置锁定
+- ^ : 锁定major
+- ~ : 锁定minor
+- 空 : 锁定patch
+- * : 最新版本
 
-### 架构
+## node的浏览端调试
+- node --inspect --inspect-brk server.js
 
-```
-前端 (Frontend)
-前端工程化环境 （webpack）
-CSS 预处理工具 (sass)
-JS模块化:ES Module,CommonJS Module
-JS库：JQuery
-SPA：SINGLE PAGE APPLICATION,路由SME-Router
-UI组件库：Bootstrap(AdminLTE)
+## node进程管理工具
+- supervisor
+- nodemon
+- forever
+- pm2
 
-后端(Backend)
-node.js
-Express
-MongoDB(Mongoose 驱动)
-```
+## yarn 源
+https://zhuanlan.zhihu.com/p/35856841
 
+## express template
+- ejs
+- pug
+- jade
+- art-template
 
+## 页面render
+- SSR (Server Side Render)
+- CSR (Client Side Render)
+- http://aui.github.io/art-template/
 
-## 1.文件写入(fs)
+## mongodb可视化工具
+robo 3T
 
-```js
-// 引入文件模块
-const fs = require('fs');
-// 没有异步就需要错误回调
-fs.writeFile('./logo','hello',(err,data)=>{
-    if(err){
-        
-    }else{
-        console.log('写入文件成功')
-    }
-})
-```
+## Node.js项目架构
+### 前端（Frontend）
+- 前端工程化环境（webpack）
+- CSS 预处理工具（sass）
+- JS模块化：ES Module, CommonJS Module
+- JS库：jQuery
+- SPA：single page application，路由：SME-Router
+- UI 组件库：Bootstrap(AdminLTE)
+- RMVC: Art-template
 
-## 2.进程管理(Process)
+### 后端（Backend）
+- Node.js
+- Express(static, Router, randomstring, bcrypt, cookie-session)
+- MongoDB (Mongoose)
+- EJS
+- jwt(json web token)
+- RMVP
 
-```js
-function main(argv) {
-  console.log(argv)
-}
+### 开发架构
+- 前后端分离的开发架构
 
-main(process.argv.slice(2))
-}
-```
+### 秘钥生成
+> openssl
+生成私钥：
+openssl > genrsa -out rsa_private_key.pem 2048
 
-运行
-
-```js
-node 2.3-process.js argv1 argv2
-```
-
-## 3.网络通讯
-
-```js
-
-```
+根据私钥生成公钥：
+openssl > rsa -in rsa_private_key.pem -pubout -out rsa_public_key.pem
 

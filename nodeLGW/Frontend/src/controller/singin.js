@@ -1,25 +1,24 @@
 import singinTpl from '../views/singin.art'
-// 登录
-const _handleSubmit = (router)=>{
-  // 获取事件对象
-  return (e)=>{
+import singinModel from '../models/singin'
+
+const _handleSubmit =(router)=>{
+  return async (e)=>{
       // 阻止提交表单默认事件
       e.preventDefault()
       let data = $('#sginSubmit').serialize();
       // 表单请求事件
-      $.ajax({
-          type:'POST',
-          url:'/api/users/login',
-          data,
-          success:function(data){
-              if(data.desc){
-                  router.go('/index')
-              }
-          }
-      })
+      let result = await singinModel(data)
+      if(result.data.desc){
+        localStorage.setItem('lgw-token',result.jqXHR.getResponseHeader('X-Access-Token'))
+        localStorage.setItem('lgw-user',result.jqXHR.getResponseHeader('X-Access-User'))
+        $('#login-msg').text(result.data.data.msg)
+        router.go('/index')
+      }else{
+        $('#login-msg').text(result.data.err.msg)
+        $('#users-pwd').val('')
+      }
   }
 }
-
 
 // 登录页面
 const singinRoute = (router)=>{

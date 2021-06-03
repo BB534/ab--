@@ -3,7 +3,7 @@ const { usersModel } = require('../utils/db')
 
 // 通过用户名查询用户数据
 const usersOne = (username)=>{
-  return usersModel.findOne({username})
+  return usersModel.findOne({username:username})
 }
 // 添加
 const singup = ({username,password}) => {

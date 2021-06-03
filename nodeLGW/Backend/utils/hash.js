@@ -1,9 +1,9 @@
 const bcrypt = require('bcrypt');
 
 /**
- * 通过字符串加密
+ * 字符串加密
  * @param {String} myPlaintextPassword 
- * @returns {String} hash
+ * @returns {String}
  */
 const hash = (myPlaintextPassword)=>{
   return new Promise((resolve,reject)=>{
@@ -16,7 +16,12 @@ const hash = (myPlaintextPassword)=>{
   })
 }
 
-
+/**
+ * 加密对比
+ * @param {String} myPlaintextPassword 
+ * @param {String} hash 
+ * @returns 
+ */
 const compare = (myPlaintextPassword,hash)=>{
   return new Promise((resolve,reject)=>{
     bcrypt.compare(myPlaintextPassword, hash, function(err, result) {

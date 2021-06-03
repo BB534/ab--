@@ -1,5 +1,6 @@
 const usersModel = require("../models/users");
 const { hash,compare } = require('../utils/hash')
+const { private,verify} = require('../utils/token')
 // 添加用户
 const saveController = async (req, res, next) => {
   res.set('content-type','application/json;charset=UTF-8')
@@ -65,7 +66,9 @@ const login = async (req,res,next)=>{
   if(result){
     let isLogin = await compare(password,result.password)
     if(isLogin){
-      req.session.username = username
+      let token = private({username:username})
+      res.set('X-Access-Token',token)
+      res.set('X-Access-User',username)
       res.render('success',{
         data:JSON.stringify({
           msg:'登录成功'
@@ -87,38 +90,35 @@ const login = async (req,res,next)=>{
   }
 }
 
-const logout = async (req,res,next) =>{
-  res.set('content-type','application/json;charset=UTF-8')
-  req.session.username = null
-  res.render('success',{
-    data:JSON.stringify({
-      msg:'退出成功'
-    })
-  })
-}
 
-const isAuth  =async (req,res,next) =>{
-  res.set('content-type','application/json;charset=UTF-8')
-    if(req.session.username){
-      res.render('success',{
-        data:JSON.stringify({
-          username:req.session.username
+const isAuth  = async (req,res,next) =>{
+    res.set('content-type','application/json;charset=UTF-8')
+    try {
+      let token = req.get('X-Access-Token')
+      let username = req.get('X-Access-User')
+      let isUser = usersModel.usersOne(username)
+      let isToken = verify(token)
+      if(isUser){
+          res.render('success',{
+            data:JSON.stringify({
+              username:isToken.username
+            })
         })
-      })
-    }else{
-      res.render('fail',{
-        data:JSON.stringify({
-          msg:'请登录'
+      }
+    } catch (error) {
+        res.render('fail',{
+          data:JSON.stringify({
+            msg:'请登录'
+          })
         })
-      })
     }
 }
+
 
 module.exports = {
   saveController,
   list,
   removeId,
   login,
-  logout,
   isAuth
 };

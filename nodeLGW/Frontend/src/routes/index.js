@@ -1,13 +1,14 @@
-import SMERouter from 'sme-router'
-import indexRoute from '../controller/users/index'
+import gp21Route from 'gp21-router'
+import indexRoute from '../controller/index'
 import singinRoute from '../controller/singin'
-import routeGuard from '../models/guard'
+import auth from '../models/auth'
+import userRoute from '../controller/users/list'
 
-const router = new SMERouter('root')
+const router = new gp21Route('root')
 
 // 路由守卫
 router.use( async (req,res,next)=>{
-  let result = await routeGuard()
+  let result = await auth()
   if(result.desc){
     router.go('/index')
   }else{
@@ -20,5 +21,6 @@ router.route('/',()=>{})
 router.route('/singin',singinRoute(router))
 
 router.route('/index',indexRoute(router))
+
 
 export default router

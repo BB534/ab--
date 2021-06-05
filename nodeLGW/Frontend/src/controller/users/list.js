@@ -70,13 +70,9 @@ const _methods = () => {
 };
 
 const userRoute = (router) => {
-  const index = (req, res) => {
-    res.render(indexTpl());
-    // 调用window.resize，让页面撑满整个屏幕
-    $(window, ".wrapper").resize();
-    // 页面填充
-    $("#content").html(usersTpl());
-    // 绑定添加按钮
+  const index = (req, res,next) => {
+    next()
+    res.render(usersTpl())
     $("#usersBtn").on("click", usersSave);
     // 首次渲染
     _loadOne();
@@ -88,7 +84,7 @@ const userRoute = (router) => {
   return async (req, res, next) => {
     let data = await auth();
     if (data.desc) {
-      index(req, res);
+      index(req, res,next);
     } else {
       router.go("/singin");
     }

@@ -29,7 +29,7 @@ const toolPage = (data, pageSize) => {
 
 const _bindEvent = (data, pageSize) => {
   // 绑定页码事件
-  $("#users-page").on("click", "#page-body li:not(:first,:last)", function () {
+  $("#users-page").off('click').on("click", "#page-body li:not(:first,:last)", function () {
     let index = $(this).index();
     page.setcurPage(index);
     $("body").trigger("changeCurPage", index);

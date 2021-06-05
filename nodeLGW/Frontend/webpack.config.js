@@ -69,6 +69,17 @@ module.exports = {
       {
         test:/\.css$/,
         loaders: ['style-loader', 'css-loader'], // 先解析我们的css进js，然后再从js中提取
+      },
+      {
+        test: /\.(png|jpg|gif)$/i,
+        use:[
+         {
+          loader: 'url-loader',
+          options: {
+            limit: 8192
+          }
+         }
+        ]
       }
     ]
   },

@@ -1,8 +1,10 @@
 var express = require('express');
 var hbyRouter = express.Router();
 
-const {hbyControllers} = require('../controllers/hby')
+const {hbyControllers,hbyGetDataCount} = require('../controllers/hby')
 
-hbyRouter.get('/',hbyControllers)
+hbyRouter.get('/save',hbyControllers)
+
+hbyRouter.get('/getData',hbyGetDataCount)
 
 exports.hbyRouter = hbyRouter

@@ -1,0 +1,9 @@
+{{each data}}
+<tr>
+  <td>{{$index+1}}</td>
+  <td>abc</td>
+  <td>
+    <button  data-id="{{$value._id}}" class="btn btn-block btn-danger removeId">删除</button>
+  </td>
+</tr>
+{{/each}}

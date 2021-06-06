@@ -3,37 +3,42 @@ const { hbyModel } = require('../utils/db')
 
 // 添加
 const saveHby = ({
-        date,
-        operator,
-        shop,
-        keyword,
-        price,
-        wechat,
-        taobao,
-        order,
-        official,
-        refund,
-        operating,
-        gift,
-        remarks
-}) => {
-    const hbys = new hbyModel({
-        date,
-        operator,
-        shop,
-        keyword,
-        price,
-        wechat,
-        taobao,
-        order,
-        official,
-        refund,
-        operating,
-        gift,
-        remarks
-    });
-    return hbys.save();
-  };
+    date,
+    operator,
+    shop,
+    keyword,
+    price,
+    wechat,
+    taobao,
+    order,
+    official,
+    refund,
+    operating,
+    gift,
+    remarks
+})=>{
+    return new Promise((reslove,reject)=>{
+        const hbys = new hbyModel({
+            date,
+            operator,
+            shop,
+            keyword,
+            price,
+            wechat,
+            taobao,
+            order,
+            official,
+            refund,
+            operating,
+            gift,
+            remarks
+        });
+       let res =  hbys.save();
+        if(res){
+            reslove(res)
+        }
+    })
+}
 
 //   查询总数
 
@@ -61,8 +66,14 @@ const hbyRemove = ()=>{
     })
 }
 
+
+const hbyFindOne = (taobao)=>{
+    return hbyModel.findOne({taobao})
+}
+
 module.exports = {
     saveHby,
     hbyCount,
-    hbyRemove
+    hbyRemove,
+    hbyFindOne
 }

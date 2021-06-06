@@ -1,12 +1,26 @@
 const axios = require("axios");
 const { screen } = require("../utils/screen");
-const  hbyModel = require('../models/hby')
+const hbyModel = require("../models/hby");
+const PQueue = require("p-queue").default;
+
+// 并发数量
+const queue = new PQueue({ concurrency: 20 });
+
+let data = {
+  where: { and: [{ field: 2200000160062353, query: { eq: "today" } }] },
+  offset: 0,
+  limit: 20,
+};
+
+// 爬虫
 const hbyControllers = async (req, res, next) => {
   res.set("content-type", "application/json;charset=UTF-8");
+  let { dataCount, tableId } = req.query;
   axios.interceptors.request.use(
     function (config) {
       // 设置统一的请求头
-      (config.headers.Authorization = "Bearer DRKnzhdStRGfjSlA6ohA17QK2OOQVJn90aRbAt6S001" );
+      config.headers.Authorization =
+        "Bearer DRKnzhdStRGfjSlA6ohA17QK2OOQVJn90aRbAt6S001";
       return config;
     },
     function (error) {
@@ -14,68 +28,73 @@ const hbyControllers = async (req, res, next) => {
     }
   );
 
-    let data = {"where":{"and":[{"field":2200000160062353,"query":{"eq":"yesterday"}}]},"offset":0,"limit":20}
-    let tableId;
-    await axios.get('https://api.huoban.com/v2/spaces/joined?type=all').then((ressult)=>{
-      tableId = ressult.data[0]['table_ids']
-    })
+  let pageszie = Math.ceil(dataCount / 20);
+  console.log(pageszie);
+  const getPage = async (page) => {
+    console.log("获取数据" + page);
+    data.offset = page;
+    let res = await axios.post(
+      `https://api.huoban.com/v2/item/table/${tableId}/find`,
+      data
+    );
+    let resdAta = await screen(res.data);
+    return resdAta;
+  };
 
-    tableId  = tableId[tableId.length - 1]
-    let dataCount = 0;
+  const getData = (pageszie) => {
+    console.log("获取数据");
 
-    await axios.post(`https://api.huoban.com/v2/item/table/${tableId}/find`,data).then((ressult)=>{
-      dataCount = ressult.data['filtered'];
-    })
-    let pageszie = Math.ceil(dataCount / 20)
-    
-    async function getPage(page){
-        data.offset = page
-        let res = await axios.post(`https://api.huoban.com/v2/item/table/${tableId}/find`,data)
-        let resdAta = await screen(res.data)
-        return resdAta
+    for (let i = 0; i < pageszie; i++) {
+      queue.add(async () => {
+        let result = await getPage(i * 20);
+        await screen(result);
+      });
     }
-    
-    async function getData(pageszie){
-        for (let i = 0; i < pageszie; i++) {
-            let result = await getPage( i * 20)
-            let r = await screen(result)
+  };
+
+  const isDataCount = async () => {
+    let r = await hbyModel.hbyCount();
+    console.log(dataCount,r);
+    if (dataCount > r) {
+      console.log("开始抓取");
+      let rem = await hbyModel.hbyRemove();
+      if (rem) {
+        console.log("删成功");
+        getData(pageszie);
+      }
+      let dsq = setInterval(async () => {
+        let r = await hbyModel.hbyCount();
+        if (r == dataCount) {
+          console.log("获取完毕");
+          clearInterval(dsq);
         }
+      }, 1000);
+    } else {
+      res.send("无需重复抓取");
     }
-    
-    let rem = await hbyModel.hbyRemove()
-    if(rem){
-      getData(pageszie)
-    }
+  };
 
-  
-     let dsq = setInterval(async ()=>{
-              let r = await hbyModel.hbyCount()
-              if(r == dataCount){
-                res.send('抓取成功!' + r + '条')
-                clearInterval(dsq)
-              }
-              
-        },300)
+  isDataCount();
 };
 
-const hbyGetDataCount = async (req,res,next)=>{
+// 获取总数
+const hbyGetDataCount = async (req, res, next) => {
   res.set("content-type", "application/json;charset=UTF-8");
-    let dataT = await hbyModel.hbyCount()
-    if(dataT){
-      res.render("success",{
-        data:JSON.stringify({
-          count:dataT
-        })
-      })
-    }else{
-      res.render("success",{
-        data:JSON.stringify({
-          count:dataT
-        })
-      })
-    }
-   
-}
+  let dataT = await hbyModel.hbyCount();
+  if (dataT) {
+    res.render("success", {
+      data: JSON.stringify({
+        count: dataT,
+      }),
+    });
+  } else {
+    res.render("success", {
+      data: JSON.stringify({
+        count: dataT,
+      }),
+    });
+  }
+};
 
 exports.hbyControllers = hbyControllers;
 exports.hbyGetDataCount = hbyGetDataCount;

@@ -30,6 +30,8 @@ const hbySchema = mongoose.Schema({
   gift:String,
   remarks:String,
 })
+
+mongoose.set('useCreateIndex', true)
 const usersModel = mongoose.model("users", userSchema);
 const hbyModel = mongoose.model("hbys",hbySchema)
 module.exports = {

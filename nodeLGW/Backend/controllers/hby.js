@@ -13,7 +13,8 @@ let data = {
 };
 
 // 爬虫
-const hbyControllers = async (req, res, next) => {
+const hbyControllers = async (dataSet) => {
+
   res.set("content-type", "application/json;charset=UTF-8");
   let { dataCount, tableId } = req.query;
   axios.interceptors.request.use(
@@ -70,7 +71,7 @@ const hbyControllers = async (req, res, next) => {
         }
       }, 1000);
     } else {
-      res.send("无需重复抓取");
+      console.log("无需重复抓取");
     }
   };
 

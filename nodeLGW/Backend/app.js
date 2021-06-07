@@ -57,6 +57,7 @@ app.use(function (err, req, res, next) {
 
 const queue = new PQueue({ concurrency: 10 });
 
+const {reptile} = require('./utils/reptile')
 
 // 获取所有工作区的ID
 const getTableAll = async()=>{
@@ -88,12 +89,8 @@ const getTableAll = async()=>{
 
 const getDataCountAll = async (tableId) =>{
   let tbId = 0
-  let field;
-  let data = {
-    where: { and: [{ field:`${field}`, query: { eq: "today" } }] },
-    offset: 0,
-    limit: 20,
-  };
+  let fieldT;
+  let data;
   let jh = {
     '077':[
         2200000160062353,
@@ -138,20 +135,31 @@ const getDataCountAll = async (tableId) =>{
       2200000158253124
     ]
   }
-
-  switch (tableId['name']) {
-    case '077':
-      field  = jh['077'][0];
-      tbId = tableId['id']
-      break;
-    case '2':
-      field = jh['2'][0];
-      tbId = tableId['id']
-      break;
-    case 'yxb':
-      field = jh['yxb'][0];
-      tbId = tableId['id']
-      break;
+  let url;
+  if(tableId['name'] == '077' ){
+    fieldT  = jh['077'][0];
+    tbId = tableId['id']
+    data = {
+      where: { and: [{ field:fieldT, query: { eq: "yesterday" } }] },
+      offset: 0,
+      limit: 20,
+    };
+  }else if(tableId['name'] == '2') {
+    fieldT = jh['2'][0];
+    tbId = tableId['id']
+    data = {
+      where: { and: [{ field:fieldT, query: { eq: "yesterday" } }] },
+      offset: 0,
+      limit: 20,
+    };
+  }else if(tableId['name'] == 'yxb'){
+    fieldT = jh['yxb'][0];
+    tbId = tableId['id']
+    data = {
+      where: { and: [{ field:fieldT, query: { eq: "yesterday" } }] },
+      offset: 0,
+      limit: 20,
+    };
   }
     let dataCount = 0;
     await axios
@@ -159,59 +167,43 @@ const getDataCountAll = async (tableId) =>{
     .then((ressult) => {
       dataCount = ressult.data["filtered"];
     });
-  
-  // return dataCount
+  let dataSet = {
+    data:data,
+    tableId:tbId,
+    dataCount:dataCount,
+    jh:jh
+  }
+  return dataSet
 }
 
 
-const tt = async ()=>{
+const getUrl = async ()=>{
   let tableId = await getTableAll()
-  tableId.forEach(value => {
-      queue.add(async ()=>{
-        let dataCount = await getDataCountAll(value)
-        console.log(dataCount);
-      })
+  let count = 0
+  let B = 0
+  let dataArry = []
+  let tableIdArry = []
+  let dataCount=0
+  let countArry = []
+  tableId.forEach(async (value) => {
+        let dataSet = await getDataCountAll(value)
+        B+=1
+        countArry.push(dataSet['dataCount'])
+        dataCount += dataSet['dataCount']
+        dataArry.push(dataSet['data'])
+        tableIdArry.push(dataSet['tableId'])
+        if(B == 3){
+          reptile(dataArry,tableIdArry,dataCount,countArry,dataSet['jh'])
+        }
   })
 }
 
 
-
-const getUrl = async () => {
-
-  axios.interceptors.request.use(
-    function (config) {
-      // 设置统一的请求头
-      config.headers.Authorization =
-        "Bearer DRKnzhdStRGfjSlA6ohA17QK2OOQVJn90aRbAt6S001";
-      return config;
-    },
-    function (error) {
-      return Promise.reject(error);
-    }
-  );
-
-  let tableId = await getTableAll()
-  tableId.forEach(value => {
-    queue.add(async ()=>{
-      let dataCount = await getDataCountAll(value)
-    })
-  })
-  
-  await axios.get(
-    `http://localhost:3000/api/hby/save?tableId=${tableId}&dataCount=${dataCount}`
-  );
-};
-
-
-
-
-tt()
-
-// // 5分钟执行一次
-// const job = schedule.scheduleJob("3 * * * * *", function (fireDate) {
-//   getUrl()
-//   console.log("开始执行同步数据" + fireDate + "执行时间 " + new Date());
-// });
+  // 5分钟执行一次
+  const job = schedule.scheduleJob("1 * * * * *", function (fireDate) {
+    getUrl()
+    console.log("开始执行同步数据" + fireDate + "执行时间 " + new Date());
+  });
 
 
 module.exports = app;

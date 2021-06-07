@@ -96,5 +96,17 @@ const hbyGetDataCount = async (req, res, next) => {
   }
 };
 
+
+// 根据名称查询对单
+const hbyGetWhere = async(req,res,next)=>{
+  let {shop} = req.query
+  console.log(shop);
+  let result = await hbyModel.hbyWhereACount(shop)
+  if(result){
+    res.send(`${result}`)
+  }
+}
+
 exports.hbyControllers = hbyControllers;
 exports.hbyGetDataCount = hbyGetDataCount;
+exports.hbyGetWhere = hbyGetWhere;

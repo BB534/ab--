@@ -71,9 +71,23 @@ const hbyFindOne = (taobao)=>{
     return hbyModel.findOne({taobao})
 }
 
+const  hbyWhereACount = (where)=>{
+    return new Promise((resolve, reject)=>{
+        hbyModel.where({shop:where}).countDocuments((err,cont)=>{
+            if(err){
+                reject(err)
+            }else{
+                resolve(cont)
+            }
+           
+        })
+    })
+}
+
 module.exports = {
     saveHby,
     hbyCount,
     hbyRemove,
-    hbyFindOne
+    hbyFindOne,
+    hbyWhereACount
 }

@@ -84,10 +84,24 @@ const  hbyWhereACount = (where)=>{
     })
 }
 
+const  hbyWhereACounts = (operator,shop)=>{
+    return new Promise((resolve, reject)=>{
+        hbyModel.where({operator,shop}).countDocuments((err,cont)=>{
+            if(err){
+                reject(err)
+            }else{
+                resolve(cont)
+            }
+           
+        })
+    })
+}
+
 module.exports = {
     saveHby,
     hbyCount,
     hbyRemove,
     hbyFindOne,
-    hbyWhereACount
+    hbyWhereACount,
+    hbyWhereACounts
 }

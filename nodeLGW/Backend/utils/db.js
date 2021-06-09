@@ -15,6 +15,7 @@ const userSchema = mongoose.Schema({
 });
 
 
+// 伙伴云表格集合
 const hbySchema = mongoose.Schema({
   date:String,
   operator:String,
@@ -31,10 +32,22 @@ const hbySchema = mongoose.Schema({
   remarks:String,
 })
 
+// 账单集合
+
+const billSchema = mongoose.Schema({
+  shop:{type:String,unique:true},
+  formula:{type:String},
+  route:{type:String},
+  sendout:{type:String},
+  information:{type:String}
+})
+
 mongoose.set('useCreateIndex', true)
 const usersModel = mongoose.model("users", userSchema);
 const hbyModel = mongoose.model("hbys",hbySchema)
+const bilModel = mongoose.model('bills',billSchema);
 module.exports = {
   usersModel,
-  hbyModel
+  hbyModel,
+  bilModel
 };

@@ -13,6 +13,7 @@ var app = express();
 
 const { userRouter } = require("../Backend/routes/users");
 const { hbyRouter } = require("./routes/hby");
+const {billRouter} = require('./routes/bill')
 const {getUrl} = require('./utils/geturl')
 // 模板引擎设置
 app.set("views", path.join(__dirname, "views"));
@@ -35,6 +36,7 @@ app.use(express.static(path.join(__dirname, "public")));
 // 设置api请求拦截中间件
 app.use("/api/users", userRouter);
 app.use("/api/hby", hbyRouter);
+app.use('/api/bill',billRouter)
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));

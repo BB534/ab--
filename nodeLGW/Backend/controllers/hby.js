@@ -2,7 +2,7 @@ const axios = require("axios");
 const { screen } = require("../utils/screen");
 const hbyModel = require("../models/hby");
 const PQueue = require("p-queue").default;
-
+const {exportTable} = require('../utils/exportTable')
 // 并发数量
 const queue = new PQueue({ concurrency: 20 });
 
@@ -61,7 +61,16 @@ const hbyGetWheresCount = async(req,res,next)=>{
   }
 }
 
+// 导出账单
+const hbyGetComplete = async (req,res,next)=>{
+  let {shop} = req.query
+  exportTable(shop)
+}
+
+
+
 exports.hbyControllers = hbyControllers;
 exports.hbyGetDataCount = hbyGetDataCount;
 exports.hbyGetWhere = hbyGetWhere;
 exports.hbyGetWheresCount = hbyGetWheresCount
+exports.hbyGetComplete = hbyGetComplete 

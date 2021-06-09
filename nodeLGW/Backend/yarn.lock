@@ -523,6 +523,11 @@ ejs@~2.6.1:
   resolved "https://registry.nlark.com/ejs/download/ejs-2.6.2.tgz#3a32c63d1cd16d11266cd4703b14fec4e74ab4f6"
   integrity sha1-OjLGPRzRbREmbNRwOxT+xOdKtPY=
 
+ejsexcel@^3.6.1:
+  version "3.6.1"
+  resolved "https://registry.npm.taobao.org/ejsexcel/download/ejsexcel-3.6.1.tgz#ed7babfcf85a7e8af7b32c7c0700c6e279e75399"
+  integrity sha1-7Xur/Phafor3syx8BwDG4nnnU5k=
+
 emoji-regex@^7.0.1:
   version "7.0.3"
   resolved "https://registry.nlark.com/emoji-regex/download/emoji-regex-7.0.3.tgz#933a04052860c85e83c122479c4748a8e4c72156"

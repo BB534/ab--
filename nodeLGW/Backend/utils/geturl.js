@@ -28,70 +28,35 @@ const getTableAll = async()=>{
         let json = {'name':'','id':''}
         let d = value['spaces'][0]['table_ids']
         json.name = value['company']['name']
-        if(json.name == 'yxb'){
-          json.id = d[d.length - 2]
-        }else {
-          json.id = d[d.length - 1]
-        }
+        
+        // if(json.name == 'yxb'){
+        //   json.id = d[d.length - 2]
+        // }else {
+        //   json.id = d[d.length - 1]
+        // }
+        json.id = d[d.length - 1]
         tableIdAll.push(json)
       });
   })
   return tableIdAll
 }
 
+
 // 获取所有数据总和
 const getDataCountAll = async (tableId) =>{
 let tbId = 0
 let fieldT;
 let data;
-let jh = {
-  '077':[
-      2200000160062353,
-      2200000160062354,
-      2200000160062355,
-      2200000160062356,
-      2200000160062357,
-      2200000160062358,
-      2200000160062359,
-      2200000160062360,
-      2200000160062362,
-      2200000160062363,
-      2200000160062364,
-      2200000160062365
-    ],
-  '2':[
-    2200000160267291,
-    2200000160267292,
-    2200000160267293,
-    2200000160267294,
-    2200000160267295,
-    2200000160267296,
-    2200000160267297,
-    2200000160267298,
-    2200000160267301,
-    2200000160267302,
-    2200000160267303,
-    2200000160267304
-  ],
-  'yxb':[
-    2200000158253111,
-    2200000158253112,
-    2200000158253113,
-    2200000158253114,
-    2200000158253115,
-    2200000158253116,
-    2200000158253117,
-    2200000158253118,
-    2200000158253121,
-    2200000158253122,
-    2200000158253123,
-    2200000158253124
-  ]
-}
 let url;
+let jh = {
+  '077':[2200000160062353,2200000160062354,2200000160062355,2200000160062356,2200000160062357,2200000160062358,2200000160062359,2200000160062360,2200000160062362,2200000160062363,2200000160062364,2200000160062365],
+  '2':[2200000160267291,2200000160267292,2200000160267293,2200000160267294,2200000160267295,2200000160267296,2200000160267297,2200000160267298,2200000160267301,2200000160267302,2200000160267303,2200000160267304],
+  'yxb':[2200000160612473,2200000160612474,2200000160612475,2200000160612476,2200000160612477,2200000160612478,2200000160612479,2200000160612480,2200000160612481,2200000160612482,2200000160612483,2200000160612484,2200000160612485,2200000160612486]
+}
 if(tableId['name'] == '077' ){
   fieldT  = jh['077'][0];
   tbId = tableId['id']
+  TablName = tableId['name']
   data = {
     where: { and: [{ field:fieldT, query: { eq: "today" } }] },
     offset: 0,
@@ -100,6 +65,7 @@ if(tableId['name'] == '077' ){
 }else if(tableId['name'] == '2') {
   fieldT = jh['2'][0];
   tbId = tableId['id']
+  TablName = tableId['name']
   data = {
     where: { and: [{ field:fieldT, query: { eq: "today" } }] },
     offset: 0,
@@ -108,6 +74,7 @@ if(tableId['name'] == '077' ){
 }else if(tableId['name'] == 'yxb'){
   fieldT = jh['yxb'][0];
   tbId = tableId['id']
+  TablName = tableId['name']
   data = {
     where: { and: [{ field:fieldT, query: { eq: "today" } }] },
     offset: 0,
@@ -115,6 +82,7 @@ if(tableId['name'] == '077' ){
   };
 }
   let dataCount = 0;
+  
   await axios
   .post(`https://api.huoban.com/v2/item/table/${tbId}/find`, data)
   .then((ressult) => {
@@ -128,7 +96,7 @@ let dataSet = {
 }
 return dataSet
 }
-
+// getDataCountAll()
 // 开始执行同步请求
 const getUrl = async ()=>{
 let tableId = await getTableAll()
@@ -146,11 +114,11 @@ tableId.forEach(async (value) => {
       dataArry.push(dataSet['data'])
       tableIdArry.push(dataSet['tableId'])
       if(B == 3){
+        console.log(countArry);
         reptile(dataArry,tableIdArry,dataCount,countArry,dataSet['jh'])
       }
 })
 }
-
 
  const job = schedule.scheduleJob("1 * * * * *", async  function (fireDate) {
   await getUrl()

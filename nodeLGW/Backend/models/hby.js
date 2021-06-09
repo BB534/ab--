@@ -97,11 +97,15 @@ const  hbyWhereACounts = (operator,shop)=>{
     })
 }
 
+const hbygetdata = async (shop) => {
+    return hbyModel.find({shop})
+}
 module.exports = {
     saveHby,
     hbyCount,
     hbyRemove,
     hbyFindOne,
     hbyWhereACount,
-    hbyWhereACounts
+    hbyWhereACounts,
+    hbygetdata
 }

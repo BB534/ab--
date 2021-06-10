@@ -119,9 +119,8 @@ tableId.forEach(async (value) => {
       }
 })
 }
-
- const job = schedule.scheduleJob("1 * * * * *", async  function (fireDate) {
+// 五分钟进行一次撞库
+ const job = schedule.scheduleJob("5 * * * * *", async  function (fireDate) {
   await getUrl()
   console.log("开始执行同步数据" +  "执行时间 " + new Date());
 });
-

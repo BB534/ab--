@@ -40,7 +40,6 @@ const hbyGetDataCount = async (req, res, next) => {
 // 根据名称查询对单
 const hbyGetWhere = async(req,res,next)=>{
   let {shop} = req.query
-  console.log(shop);
   let result = await hbyModel.hbyWhereACount(shop)
   if(result){
     res.send(`${result}`)
@@ -63,8 +62,17 @@ const hbyGetWheresCount = async(req,res,next)=>{
 
 // 导出账单
 const hbyGetComplete = async (req,res,next)=>{
+  // 导出账单时停止定时获取
   let {shop} = req.query
-  exportTable(shop)
+  queue.add (async ()=>{
+    await exportTable(shop)
+    res.render('success',{
+      data:JSON.stringify({
+        msg:'成功'
+      })
+    })
+  })
+  
 }
 
 

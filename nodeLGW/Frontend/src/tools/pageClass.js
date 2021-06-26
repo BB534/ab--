@@ -28,7 +28,7 @@ const toolPage = (data, pageSize) => {
 };
 
 const _bindEvent = (data, pageSize) => {
-  // 绑定页码事件
+  // 绑定页码事件,为了防止重复调用每次都先取消点击事件
   $("#users-page").off('click').on("click", "#page-body li:not(:first,:last)", function () {
     let index = $(this).index();
     page.setcurPage(index);

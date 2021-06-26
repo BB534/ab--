@@ -42,7 +42,7 @@ const getTableAll = async()=>{
 }
 
 
-// 获取所有数据总和
+// 伙伴云协议
 const getDataCountAll = async (tableId) =>{
 let tbId = 0
 let fieldT;
@@ -119,7 +119,7 @@ tableId.forEach(async (value) => {
       }
 })
 }
-// 五分钟进行一次撞库
+// 五分钟撞库一次伙伴云
  const job = schedule.scheduleJob("5 * * * * *", async  function (fireDate) {
   await getUrl()
   console.log("开始执行同步数据" +  "执行时间 " + new Date());

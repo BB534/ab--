@@ -1,10 +1,12 @@
 import indexTpl from "../views/index.art";
 import usersSave from "../controller/users/usersAdd";
+import navHeader from "../tools/navPage"
 import auth from "../models/auth";
 import img from '../assets/user.jpg'
 const indexRoute = (router) => {
   return async (req, res, next) => {
     let result = await auth();
+    
     if (result.desc) {
       let html = indexTpl({
         subRouter:res.subRoute(),
@@ -12,6 +14,7 @@ const indexRoute = (router) => {
       })
       next(html);
       $(window, ".wrapper").resize();
+      navHeader()
       let hash = location.hash
       const $as = $('#sidebar-menu li:not(:first-child) a')
       $as

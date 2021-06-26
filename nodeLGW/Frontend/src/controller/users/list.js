@@ -1,6 +1,5 @@
 
 import usersTpl from "../../views/users.art";
-import loadingTpl from "../../views/loading.art";
 import usersListTpl from "../../views/users-list.art";
 import usersSave from "./usersAdd";
 import router from "../../routes";

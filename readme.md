@@ -1,6 +1,6 @@
 
 
-# 黑马进阶记录
+# ES5
 
 ## **各种事件**
 
@@ -45,18 +45,6 @@ $('body').trigger(调用id,要传的数据)
 LottieFiles
 ```
 
-## ES6类的继承
-
-```asciiarmor
-super()  //继承父类的方法,但是必须在所有this之前使用
-```
-
-## ES5构造函数
-```asciiarmor
-原型链 ___proto__对象都有原型链
-Obj.prototype.方法名 给构造函添加方法 但是this指向改变了,所以需要使用constructor.对象 指回函数
-```
-
 ## 内置对象
 ```clike
 数组
@@ -70,6 +58,7 @@ Obj.prototype.方法名 给构造函添加方法 但是this指向改变了,所�
     trim() 去除两边的空白字符
 对象
     Object.keys() 类似for in 循环，返回的是属性名组成的数据
+    // 定义私有属性
     Object.defineProperty(obj,属性名){
         value:设置属性的值
         writable:是否可以重写 true || false
@@ -83,11 +72,6 @@ Obj.prototype.方法名 给构造函添加方法 但是this指向改变了,所�
 obj.call(obj,value)
 obj.apply(obj,[]) 两者都会立即调用函数,并且改变this指向
 obj.bind(obj.value) 不会调用函数，改变内部this指向
-```
-## 高级函数
-```apl
->定义:传入参数带有函数，或返回参数带有函数就为高级函数
->例如当我们想某个div移动到指定距离后，执行其他函数，这时就可以传入一个函数来完成剩余的函数
 ```
 ## 闭包
 ```js
@@ -258,9 +242,327 @@ s.has(1); has方法根据value判断值是否存在,返回值true,false
 可以使用forEach方法遍历进行取值
 Set方法之间可以使用链式操作 s.add(1).add(2).add(3)
 ```
+# Es6+扩展
+## let关键字
+- 没有变量提升，不会将变量挂载到windos下
+- 暂时性死区，不能在定义之前去使用更加安全
+- 块级作用域
+- 不重复
 
+## const
+- es5之前定义常量
+```javascript
+Object.defineProperty(window,"PI",{
+  value:3.14,
+  writable:false
+})
+```
+- 块级作用域
+- 没有变量提升
+- 不能改变（内存地址不改变，内存中的内容可以改变）
+- 强制锁定浅层（Object.freeze(Object)）
 
-## Ajax
+## 解构赋值
+- 一种格式对变量进行赋值
+- 数组解构
+
+```javascript
+// 通过下标对应解构
+let arr = [1,2,3]
+let [a,b,c] = arr
+console.log(a,b,c)
+
+let arr2 = [1,2,3,[4,5,6]]
+let [a,b,c,[d,e,f]] = arr2
+
+```
+- 对象解构赋值
+```javascript
+// 通过key对应解构，所以交换位置无影响
+let obj = {
+  name:"zs",
+  age:30
+}
+// let {name:uname,age:uage} = obj 起别名
+let {name,age} = obj
+```
+- 字符串解构赋值
+```javascript
+// 字符串的解构对饮数组的解构
+let str = 'imooc'
+let [a,b,c,d] = str
+```
+- json赋值
+```javascript
+ let json = {"a":'hello',"b":'word'}
+ let {a,b} = JSON.parse(json)
+```
+## 数组的遍历
+```javascript
+let arr = [1,2,3,4,5,6]
+arr.map() 遍历数组元素,根据回调操作返回新的数组
+arr.fitter() 遍历数组,返回过滤的数组
+arr.some() 遍历数组,判断是否有复合条件的结果,返回布尔值
+arr.every() 检查数组中的每一个元素是否都满足条件，返回布尔值
+arr.reduce(()=>{},初始值) 函数累加器
+arr.find() 返回第一个通过测试的元素
+arr.findIndex() 返回第一个通过测试元素的下标
+// 想要下标就用arr.keys()
+for (let item of arr.values){
+  console.log(item) // 返回元素
+}
+// 下标和内容
+for (let [index,item] of arr.entries()){
+  console.log(index,item)
+}
+```
+## 数组的扩展
+
+- 将伪数组转换为数组 Array.from()
+- 构造器构造数组时使用Array.of() 不管是1个参数还是多个参数都会转换为值并且会将各种类型的参数拼装为数组
+
+- arr.copyWithin() 替换数组中的某些元素
+```javascript
+let arr = [1,2,3,4,5]
+// 第一个参数:起始下标,结尾下标
+console.log(arr.copyWithin(1,3))
+// 输出[1,4,5,4,5]
+```
+
+- arr.fill() 
+```javascript
+// 构造强度为3,默认填充为7
+let arr = new Array(3).fill(7)
+ // [7,7,7]
+let array = [1,2,3,4,5]
+// 替换填充，不包括结束位置，不填2,3参数全部替换
+array.fill('填充',下标开始位置,结束位置)
+
+```
+- indexOf 查询是否包含元素，查到返回下标，没查到返回-1
+- includes 检查是否包含元素，返回布尔值，并且支持检测Nan类型
+
+## 扩展运算符 | rest参数
+- 扩展运算符：把数组或者类数组展开用逗号隔开
+- rest参数：把逗号隔开的值组合成一个数组
+
+## 对象扩展
+- Object.is() 和全等一样，但是可以判断Nan === Nan
+- Object.assign() 合并对象
+- in 判断对象是否包含某个属性，也可以用在数组中，在数组中是判断下标是否存在值
+- Object.keys(obj).forEach(key => {}) 遍历对象
+- Object.getOwnPropertyNames(obj).forEach(key => {})遍历对象
+- Reflect.ownKeys(obj).forEach(key => {})遍历对象
+
+## 深拷贝与浅拷贝
+- 引用同一块内存地址就是浅拷贝
+- 可以用JSON.strungify 和 JSON.parse 是实现深拷贝
+
+```javascript
+function deCopy(initObj,copyObj){
+  for (const key in copyObj) {
+    let copvalue = copyObj[key]
+      if(copvalue instanceof Object){
+        // 根据类型创建了一个空的引用类型 {} []
+        let subtage = new copvalue.constructor;
+        initObj[key] = subtage;
+        deCopy(subtage,copyObj[key])
+      }else{
+        initObj[key] = copyObj[key]
+      }
+  }
+}
+```
+## 类与继承
+- Class
+- extends 继承
+- spuer()传递属性
+- 定义最顶层 get 只读 set 对属性有业务逻辑存取的时候可以使用
+```javascript
+// 只读
+get sex(){
+  return this._sex
+}
+// 设置
+set sex(val){ // 1:male 0 :female
+  if(val == 0){
+    tihs._sex = 'male' 
+  }else if(val == 0){
+    this._sex = 'female'
+  }
+}
+```
+- static 定义静态
+```javascript
+// 定义静态方法
+static getCount(){
+}
+// 静态属性
+实例对象.count = 9 
+```
+
+## Symbol
+- 一种新的原始数据类型（象征，独一无二）
+- 申明方式
+```javascript
+let s1 = Symbol('foo')
+s1 = s1 // false
+let s1 = Symbol.for('foo')
+let s2 = Symbol.for('foo')
+s1 == s2 // true
+
+```
+- description 描述
+- keyFor 查找全局已定义的
+- 避免重复属性的逻辑
+- for in 无法遍历Symbol
+- 只取Symbol
+```javascript
+for (let key of Object.getOwnPropertySymbols(user)){
+  console.log(key)
+}
+```
+- 两者都取
+```javascript
+  for(let key of Reflect.ownKeys(user)){
+    console.log(key)
+  }
+```
+- 消除魔术字符串
+
+## Set
+- 一种新的数据结构,类数组但是值是唯一的
+```javascript
+let s = new Set([1,2,3])
+// Set(3){1,2,3}
+```
+- 增加 add 可以链式操作
+- 删除 delete
+- 清空 clear
+- 判断包含 has
+- 判断长度 size
+- 遍历
+```javascript
+s.forEach(item=>console.log(item))
+
+for( let key  of s ){
+  console.log(key)
+}
+for (let key of s.keys)
+for (let key of s.value)
+for (let key of s.entries)
+```
+- 应用场景
+
+```javascript
+// 数组去重
+let arr = [1,2,2,3,4]
+let s = new Set(arr)
+
+// 合并去重
+let arr1 = [1,2,3,4]
+let arr2 = [2,3,4,5,6]
+let s = new Set([...arr1,...arr2])
+
+// 交集
+let s1 = new Set(arr1)
+let s2 = new Set(arr2)
+let result = new Set(arr1.filter(item => s2.has(item)))
+
+// 差集
+let result = new Set(arr1.filter(item => !s2.has(item)))
+```
+## webakSet
+- 只能添加对象
+- 添加 add
+- 删除 delete 
+- 不能遍历，弱引用
+
+## Map
+- 数据结构
+```javascript
+let m = new Map()
+let obj = {
+  name:'immoc'
+}
+m.set(obj,'es')
+console.log(m.get(obj))
+m.delete(obj)
+m.has(obj)
+```
+```javascript
+  let map = new Map([
+    ['name','imooc'],
+    ['age,5]
+  ])
+```
+- 遍历 forEach fo of  
+- 引用场景 和对象差不多，比较强大支持多类型的key，频繁的增删改成map更推荐
+- weakmap key只支持引用类型
+
+## 字符串的扩展
+- unicode 字符串表示法
+```javascript
+  \uxxxx 码点 0000 ~ ffff
+  \u{超出范围的码点}
+```
+- 字符串的遍历 for of
+- String.fromCharCodePoint() //通过码点返回对应字符
+- String.prototype.includes() 是否包含
+- String.prototype.startsWith() 某个字符开头
+- String.prototype.endsWith() 某个字符串结尾
+- String.prototype.repeat() 替换
+
+## 正则表达式扩展
+- i(忽略大小写) m(多行匹配) g(全局匹配)
+- (y) 粘连修饰符 （u
+
+## 数值的扩展
+- toString(进制)
+- parseInt(b,进制)
+- 0B二进制 0O八进制
+- Number.isFinite() 判断有限的字符
+- Number.isNaN() 判断是不是NaN
+- Number.isInteager()
+- Math.pow(2,53) 次方
+- Number.MAX_SAFE_INTEGER 最大值
+- Number.MIN_SAFE_INTEGER 最小值
+- Number.isSafeInteger() 判断是否是个安全的值
+- Math.trunc() 去除小数 可以转换布尔值 无法转换返回NaN
+- Number.ParseInt() 转为整数
+- Math.sing() 判断是正 返回1 负返回-1 0 返回0 可以判断布尔值
+- Math.cbrt() 计算立方根
+
+## Proxy代理
+- 对属性进行拦截
+
+- Es5中使用
+```javascript
+let obj = {}
+let newVal = ''
+Object.defineProperty(obj,'name',{
+  get(){
+    return newVal
+  }
+  set(val){
+    newVal = val
+  }
+})
+```
+- ES6语法
+```javascript
+let obj = {}
+
+// get
+let arr = [7,8,9]
+let p = new Proxy(arr,{
+  get(target,prop){
+    
+  }
+})
+```
+
+# Ajax
 ```yacas
 创建{let xhr = new XMLHttpRequest()}
 设置请求方式{xhr.open(方式,url)}

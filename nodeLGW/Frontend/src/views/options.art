@@ -5,12 +5,12 @@
       class="btn btn-info"
       id="optionsBtn"
       data-toggle="modal"
-      data-target="#myModal">
+      data-target="#optionsModal">
       添加
     </button>
   </div>
   <!-- /.box-header -->
-  <div class="box-body" style="height:314px">
+  <div class="box-body" style="">
     <table class="table table-bordered">
       <tr>
         <th style="width: 10px">ID</th>
@@ -21,7 +21,7 @@
     </table>
   </div>
   <!-- /.box-body -->
-  <div class="box-footer clearfix" id="options-page">
+  <div class="box-footer clearfix" id="users-page">
    
   </div>
 </div>

@@ -1,73 +1,22 @@
 
 
+
 # ES5
-
-## **各种事件**
-
-```apl
-onclick
-onblur：失去焦点
-onfocus 得到焦点
-onkeydown 按键盘
-onkeyup 松开键盘
-onkepress 按住键盘
-onmousedown 按下鼠标
-onmouseup 松开鼠标
-onmouseover 把鼠标放到上面
-ommousemove 移动鼠标
-onmouseout 移开鼠标
-onload ：页面加载
-onchange：改变
-onsubmit ：表单提交。
-```
-
-## Jquery观察者模式调用
-
-### 定义：
-
-```
-$('body').on('自定义调用id',(e,data)=>{
-	
-})
-```
-
-### 调用:
-
-```
-$('body').trigger(调用id,要传的数据)
-```
-
-
-
-## 加载动画
-
-```asciiarmor
-LottieFiles
-```
 
 ## 内置对象
 ```clike
-数组
-    forEach() 遍历数组
-    map() 返回一个新的数组，当要遍历的数组中的元素满足提供的条件时就会追加到新的数组中
-    fitter() 返回一个新数组,包含通过所有条件的元素
-    some() 测试数组中是不是有一个元素通过了条件，返回的是布尔值
-    every() 测试一个数组内的所有元素是不是都能通过元素,返回布尔值
-
-字符串
-    trim() 去除两边的空白字符
-对象
-    Object.keys() 类似for in 循环，返回的是属性名组成的数据
-    // 定义私有属性
-    Object.defineProperty(obj,属性名){
-        value:设置属性的值
+// 去除两边的空白字符
+String.trim() 
+// 定义常量
+ Object.defineProperty(obj,属性名){
+    value:设置属性的值
         writable:是否可以重写 true || false
-        enumerable:是否可以被枚举 false || true
-        configurable:是否可以被删除或修改特性 false || true
-    }重新编辑对象
+            enumerable:是否可以被枚举 false || true
+                configurable:是否可以被删除或修改特性 false || true
+}
 ```
 
-## 改变函数内部this指向问题
+## 改变函数this指向
 ```apl
 obj.call(obj,value)
 obj.apply(obj,[]) 两者都会立即调用函数,并且改变this指向
@@ -102,9 +51,9 @@ for(let i = 0;i < lis.length; i++){
 > 	2.闭包的作用是什么? 延伸变量的作用范围
 
 ## 递归
-	>定义:如果一个函数在内部可以调用函数本身,那么这个函数就是递归函数,递归函数得有条件退出。不然就是死循环
+>如果一个函数在内部可以调用函数本身,那么这个函数就是递归函数,递归函数得有条件退出。不然就是>循环
 
-## 深拷贝与浅拷贝
+## ES5深拷贝浅拷贝
 ```js
     obj.assign() 只拷贝第一次,层次内部则会引用原有内存地址
     利用递归来实现深拷贝函数:
@@ -156,91 +105,44 @@ g：全局匹配
 i：忽略大小写
 gi：全局匹配忽略大小写
 ```
-
-## 解构赋值
-```apl
-数组解构 [a,b,c] = [1,2,3]；a = 1,b=2,c=3; 一对一
-对象解构:{name,age} = {name:'张三',age:18} 
-对象解构2: {name:myName,age:myAge} = {name:'张三',age:18}  变量名为myName myAge
-```
-
-## 箭头函数
-```apl
-ler fn = (参数) => {//函数体} 箭头函数没有this 一边用变量名来赋值;
-```
-
-## 扩展运算符
-```apl
-1.可以将数组拆分成以逗号分割的参数序列
-
-    {
-    let ary = ["a","b","b"]
-    console.log(...ary)  输出abc
-    }
-
-2.扩展运算符可以用于合并数组,
-
-    {
-    let ary1 = [1,2,3]
-    let ary2 = [4,5,6]
-    let ary3 = [...ary1,...ary2]
-    console.log(ary3) 输出[1,2,3,4,5,6]
-    }
-
-3.ary1. push(...ary2) ； 使用扩展运算符向数组中追加另一个数组
-
-    {
-    let div = document.getElementsByTagName('div')
-    let divAry  = [...div];
-    }
-```
-
-
-## Array的扩展方法 
-```apl
-2.Array[idnex]访问数组元素
-3. forEach遍历数组
-4. push 添加元素到数组末尾
-5. pop删除数组末尾的元素
-6. unshift添加元素到数组的头部
-7. shift 删除数组头部的元素
-8. indeOf 通过某个元素返回数组中的索引
-9. splice 从一个人索引位置删除多个元素,传入第三个参数为替换
-10.slice 克隆数组 ,传入参数为截取数组
-11.数组长度 length
-12.from将伪数组，或对象转为数组,就可以调用一些数组的方法
-13.isArray() 判断某个变量是否是一个数组对象
-13.Array.of() 将一组参数转为数组
-14.14.Array.join() 链接所有数组元素转为字符串
-15.find() 找到第一个满足条件的元素
-    let ary = [{id:1,name:'张三'},{id:2,name:'李四'}]
-    let target  = ary.find((item,index) => item.id == 2);
-16.findindex() 用于找到第一个符合条件的数组成员的位置索引，如果没找到放回-1
-    let ary = [1,5,10,15];
-    let index = ary.findindex((value,index) => value > 9)
-18.includes() 用于查找某个数组中是否包含给定的值返回布尔值
-    [1,2,3] .includes(2) // true
-```
-
-## String的扩展方法
-```apl
-``  模板字符串 ${}解析变量，并且可以换行，并且可以调用函数，返回函数执行结果
-startsWith():判断参数字符串是否在原字符串的头部，返回布尔值
-endsWith()：判断参数字符串是否在原字符串的尾部，返回布尔值
-repeat() 将字符串重复n次，返回一个新的字符串
-```
-
-## Set数据结构
-```apl
-类似于数组，但是成员的值都是唯一的，没有重复的值。(可以用来做数组去重)
-const s = new Set([1,2,3,4,4]); // 可以接收数组
-s.clear() //清空所有值方法
-s.add("b"); add方法题添加值 返回set本身
-s.delete(1); dlete方法删除值,参数为value
-s.has(1); has方法根据value判断值是否存在,返回值true,false
-注意：
-可以使用forEach方法遍历进行取值
-Set方法之间可以使用链式操作 s.add(1).add(2).add(3)
+## Array的方法
+```js
+// 访问数组元素
+Array[idnex]
+//遍历数组
+Array.forEach((index,value,arr)=>{})
+// 添加元素到数组末尾,返回数组长度
+Array.push()
+// 删除数组末尾的元素 返回删除元素
+Array.pop()
+// 添加元素到数组的头部,返回数组长度
+Array.unshift
+// 删除数组头部的元素 返回删除元素
+Array.shift
+//通过某个元素返回数组中的索引 
+indexOf
+// 从一个人索引位置删除多个元素,传入第三个参数为替换
+splice(下标起始位置,下标结束位置,'替换字符')
+let res = arr.splice(1,3) 截取
+let res = arr.splice(1,3,0) 替换
+// 克隆数组 ,传入参数为截取数组
+slice
+//将伪数组，或对象转为数组,就可以调用一些数组的方法
+from
+// 判断某个变量是否是一个数组对象
+isArray() 
+// 将一组参数转为数组
+Array.of()
+// 链接所有数组元素转为字符串
+Array.join() 
+// 找到第一个满足条件的元素
+let ary = [{id:1,name:'张三'},{id:2,name:'李四'}]
+let target  = ary.find((item,index) => item.id == 2);
+// 用于找到第一个符合条件的数组成员的位置索引，如果没找到放回-1
+let ary = [1,5,10,15];
+let index = ary.findindex((value,index) => value > 9)
+//用于查找某个数组中是否包含给定的值返回布尔值 
+[1,2,3] .includes(2) // true
 ```
 # Es6+扩展
 ## let关键字
@@ -274,7 +176,6 @@ console.log(a,b,c)
 
 let arr2 = [1,2,3,[4,5,6]]
 let [a,b,c,[d,e,f]] = arr2
-
 ```
 - 对象解构赋值
 ```javascript
@@ -297,29 +198,33 @@ let [a,b,c,d] = str
  let json = {"a":'hello',"b":'word'}
  let {a,b} = JSON.parse(json)
 ```
+## 箭头函数
+```apl
+ler fn = (参数) => {//函数体} 箭头函数没有this 一边用变量名来赋值;
+```
 ## 数组的遍历
 ```javascript
 let arr = [1,2,3,4,5,6]
-arr.map() 遍历数组元素,根据回调操作返回新的数组
-arr.fitter() 遍历数组,返回过滤的数组
-arr.some() 遍历数组,判断是否有复合条件的结果,返回布尔值
-arr.every() 检查数组中的每一个元素是否都满足条件，返回布尔值
-arr.reduce(()=>{},初始值) 函数累加器
-arr.find() 返回第一个通过测试的元素
-arr.findIndex() 返回第一个通过测试元素的下标
+arr.map() //遍历数组元素,根据回调操作返回新的数组
+arr.fitter() //遍历数组,返回过滤的数组
+arr.some() //遍历数组,判断是否有符合条件的结果,返回布尔值
+arr.every() //检查数组中的每一个元素是否都满足条件，返回布尔值
+arr.reduce(()=>{},初始值) //函数累加器
+arr.find() //返回第一个通过测试的元素
+arr.findIndex() //返回第一个通过测试元素的下标
 // 想要下标就用arr.keys()
 for (let item of arr.values){
   console.log(item) // 返回元素
 }
-// 下标和内容
+// 遍历获取下标和内容
 for (let [index,item] of arr.entries()){
   console.log(index,item)
 }
 ```
 ## 数组的扩展
 
-- 将伪数组转换为数组 Array.from()
-- 构造器构造数组时使用Array.of() 不管是1个参数还是多个参数都会转换为值并且会将各种类型的参数拼装为数组
+>将伪数组转换为数组 Array.from()
+>构造器构造数组时使用Array.of() 不管是1个参数还是多个参数都会转换为值并且会将各种类型的参数拼装为数组
 
 - arr.copyWithin() 替换数组中的某些元素
 ```javascript
@@ -329,9 +234,9 @@ console.log(arr.copyWithin(1,3))
 // 输出[1,4,5,4,5]
 ```
 
-- arr.fill() 
+- arr.fill() 填充
 ```javascript
-// 构造强度为3,默认填充为7
+// 构造长度度为3,默认填充为7
 let arr = new Array(3).fill(7)
  // [7,7,7]
 let array = [1,2,3,4,5]
@@ -432,33 +337,42 @@ for (let key of Object.getOwnPropertySymbols(user)){
 
 ## Set
 - 一种新的数据结构,类数组但是值是唯一的
-```javascript
-let s = new Set([1,2,3])
-// Set(3){1,2,3}
-```
+
+- 类似于数组，但是成员的值都是唯一的，没有重复的值。(可以用来做数组去重)
+ ```javascript
+const s = new Set([1,2,3,4,4]); // 可以接收数组
+s.clear() //清空所有值方法
+s.add("b"); add方法题添加值 返回set本身
+s.delete(1); dlete方法删除值,参数为value
+s.has(1); has方法根据value判断值是否存在,返回值true,false
+注意：
+可以使用forEach方法遍历进行取值
+Set方法之间可以使用链式操作 s.add(1).add(2).add(3)
+ ```
 - 增加 add 可以链式操作
 - 删除 delete
 - 清空 clear
 - 判断包含 has
 - 判断长度 size
 - 遍历
-```javascript
+```javascript 
+let s = new Set([1,2,3])
+// Set(3){1,2,3}
 s.forEach(item=>console.log(item))
-
 for( let key  of s ){
   console.log(key)
 }
 for (let key of s.keys)
 for (let key of s.value)
 for (let key of s.entries)
+
 ```
 - 应用场景
 
-```javascript
+```js
 // 数组去重
 let arr = [1,2,2,3,4]
 let s = new Set(arr)
-
 // 合并去重
 let arr1 = [1,2,3,4]
 let arr2 = [2,3,4,5,6]
@@ -472,6 +386,9 @@ let result = new Set(arr1.filter(item => s2.has(item)))
 // 差集
 let result = new Set(arr1.filter(item => !s2.has(item)))
 ```
+
+
+
 ## webakSet
 - 只能添加对象
 - 添加 add
@@ -479,33 +396,29 @@ let result = new Set(arr1.filter(item => !s2.has(item)))
 - 不能遍历，弱引用
 
 ## Map
-- 数据结构
-```javascript
+```js
 let m = new Map()
 let obj = {
-  name:'immoc'
+name:'immoc'
 }
 m.set(obj,'es')
 console.log(m.get(obj))
 m.delete(obj)
 m.has(obj)
-```
-```javascript
-  let map = new Map([
-    ['name','imooc'],
-    ['age,5]
-  ])
+
+let map = new Map([
+  ['name','imooc'],
+  ['age,5]
+])
 ```
 - 遍历 forEach fo of  
 - 引用场景 和对象差不多，比较强大支持多类型的key，频繁的增删改成map更推荐
 - weakmap key只支持引用类型
-
 ## 字符串的扩展
 - unicode 字符串表示法
-```javascript
+  ​```javascript
   \uxxxx 码点 0000 ~ ffff
   \u{超出范围的码点}
-```
 - 字符串的遍历 for of
 - String.fromCharCodePoint() //通过码点返回对应字符
 - String.prototype.includes() 是否包含
@@ -571,18 +484,18 @@ let p = new Proxy(arr,{
     xhr.responseText //接收返回数
 }
 ```
-### get请求参数
+## get请求参数
 ```js
 let parse = 'name=' + name.value + '&pwd='+pwd.value; 
 xhr.open('get','/get?'+parse ); /需要自己拼接
 ```
 
-### post请求参数
+## post请求参数
 ```apl
 xhr.setRequestHeader('Content-type','application/x-www-form-urlencoded') 设置请求报文
 xhr.send(参数)apl
 ```
-### 请求参数的格式apl
+## 请求参数的格式apl
 ```apl
 application/x-www-form-urlencoded
 name=zhangsan&age=20&sex=男
@@ -592,7 +505,7 @@ name=zhangsan&age=20&sex=男
 注意:服务器端需引用body-parser模块,并且设置
 bodyParser.json()来解析json
 ```
-### Ajax状态码
+## Ajax状态码
 ```js
 共有五个
 0:请求已经初始化
@@ -604,7 +517,7 @@ xhr.readyState 获取ajax状态码
 xhr.onreadyStateChange() 监听状态码改变方法
 必须用于xhr.send()方法前
 ```
-### 错误处理：
+## 错误处理：
 ```js
 xhr.status 获取http状态码
 400:返回结果不是预期的结果
@@ -615,9 +528,9 @@ xhr.onerror = function(){
     alert(‘网络错误，请检查’)
 }
 ```
-### 注意:
+## 注意:
     IE低版本浏览器下,ajax存在严重的缓存,解决防范为每次请求的url参数不一样即可,所以可以在请求的url后面拼接一个随机参数。
-### 封装Ajax函数
+## 封装Ajax函数
 ```js
 function ajax(options){
             let defules = {
@@ -680,7 +593,7 @@ function ajax(options){
            }
        })
 ```
-### 三级联动
+## 三级联动
 ```apl
 1.通过接口获取省份信息
 2.后去下拉框元素
@@ -689,13 +602,13 @@ function ajax(options){
 5.当用户悬着省份时，根据省份id获取城市信息
 6.当用户选择城市时，根据城市id获取县城信息
 ```
-###  模板引擎:
+##  模板引擎:
 ```yacas
 art-template
 具体看官网文档,有使用说明
 template.defaults.imports：开放模板变量
 ```
-### FormData
+## FormData
 ```js
 可以获取指定表单的所有表单，无需添加额外参数，支持异步上传，但是不支持get请求。
 let formData = new formData（表单）
@@ -711,7 +624,7 @@ form.parse(req,(err,fields,files)=>{
 })
 ```
 
-### 二进制文件上传
+## 二进制文件上传
 ```js
 file.onchange = function(){
     let form = new FormData();
@@ -721,7 +634,7 @@ file.onchange = function(){
     xhr.send(form);
 }
 ```
-### 文件上传进度展示
+## 文件上传进度展示
 ```js
 file.onchange =function(){
     xhr.upload.onprogress = function(ev){
@@ -730,7 +643,7 @@ file.onchange =function(){
 }
 ```
 
-### JSONP代码同源
+## JSONP代码同源
 ```js
 利用script的请求不同源的性质，动态创建标签设置src为请求地址，后端返回字符串形式的函数,客户端就会解析执行函数,前提是需要在请求的script之前创建全局函数
 function jsonp(options){
@@ -749,7 +662,7 @@ function jsonp(options){
 }
 ```
 
-### CORS跨域资源共享 跨域资源共享
+## CORS跨域资源共享 跨域资源共享
 ```yacas
 在服务端设置响应头header:
 允许那些客户端访问:
@@ -761,14 +674,14 @@ function jsonp(options){
 利用模块 request
 ```
 
-### Cookie：
+## Cookie：
 ```yacas
 客户端设置:
 withCredentials:true //允许跨域携带cookie
 服务端设置:
 Access-Control-Allow-Credentials:true //允许客户端请求时携带cookie
 ```
-### $.ajax()
+## $.ajax()
 ```yacas
 type
 url
@@ -779,7 +692,7 @@ success
 error
 ```
 
-### 发送jsonp
+## 发送jsonp
 ```yacas
 $.ajax({
 url,
@@ -789,14 +702,14 @@ dataType:'jsonp'
 success:
 })
 ```
-### $.get()、$.post()
+## $.get()、$.post()
 ```js
 发送get或post请求
 $.get(url,form,function(){})
 $.post(url,form,function(){})
 ```
 
-### Ajax全局事件
+## Ajax全局事件
 
 ```js
 // 加载开始事件 必须在document下监听
@@ -2205,3 +2118,44 @@ openssl > genrsa -out rsa_private_key.pem 2048
 根据私钥生成公钥：
 openssl > rsa -in rsa_private_key.pem -pubout -out rsa_public_key.pem
 
+# 杂项
+## Jquery观察者模式调用
+
+### 定义：
+
+```
+$('body').on('自定义调用id',(e,data)=>{
+	
+})
+```
+
+### 调用:
+
+```
+$('body').trigger(调用id,要传的数据)
+```
+
+## 加载动画
+
+```asciiarmor
+LottieFiles
+```
+
+## **各种事件**
+
+```apl
+onclick
+onblur：失去焦点
+onfocus 得到焦点
+onkeydown 按键盘
+onkeyup 松开键盘
+onkepress 按住键盘
+onmousedown 按下鼠标
+onmouseup 松开鼠标
+onmouseover 把鼠标放到上面
+ommousemove 移动鼠标
+onmouseout 移开鼠标
+onload ：页面加载
+onchange：改变
+onsubmit ：表单提交。
+```

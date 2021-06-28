@@ -466,16 +466,536 @@ Object.defineProperty(obj,'name',{
 ```javascript
 let obj = {}
 
-// get
+// get 获取方法
 let arr = [7,8,9]
-let p = new Proxy(arr,{
+let arr = new Proxy(arr,{
   get(target,prop){
-    
+    return prop in target ? target[prop] : 'error'
   }
+})
+console.log(arr[1]) // 8
+```
+
+- 对象代理
+
+```js
+let dict = {
+    'hello' : '你好',
+    'world' : '世界'
+}
+dict = new Proxy(dict,{
+    get(target,prop){
+        return prop in target ? target[prop] : prop
+    }
 })
 ```
 
+- set钩子方法
+
+```js
+let arr = []
+arr = new proxy(arr,{
+    set(target,prop,val){
+        if(typeof val === 'number'){
+            target[prop] = val 
+            return true
+        }else{
+            return false
+        }
+    }
+})
+
+arr.push(5)
+arr.push(6)
+console.log(arr[0],arr[1]) // 5,6
+```
+
+- has 钩子方法
+
+```js
+let range = {
+    start:1,
+    end:5
+}
+range = new proxy(range,{
+    has(target,prop){
+        return prop >= target.start && prop <= target.end
+    }
+})
+
+console.log(2 in range) // true
+console.log(9 in range) // false
+```
+
+- ownKeys
+
+```js
+let obj = {
+    name:'imooc',
+    [Symbol('es')] : 'es6',
+    _password:'***'
+}
+
+console.log(Object.getOwnPropertyNames(obj))
+obj = new Proxy(userinfo,{
+    ownKeys(target){
+        // 拦截遍历，返回不是以_开头的字符串
+        return Object.keys(target).filter(key => !key.startWidth('_'))
+    }
+})
+// 不想遍历出带_标识的私有属性
+for (let key in obj){
+    // 拦截器会拦截进行处理
+    console.log(key)
+}
+```
+
+
+
+- 需求， 不能删除修改私有属性
+
+```js
+let obj = {
+    name:'imooc',
+    [Symbol('es')] : 'es6',
+    _password:'***'
+}
+
+obj = new Proxy(obj,{
+    get(target,prop){
+        if(prop.startsWith('_')){
+            throw new Error('不可访问')
+        }else{
+            return target[prop]
+        }
+    },
+    set(target,prop,val){
+        if(prop.startsWith('_')){
+            throw new Error('不可访问')
+        }else{
+            return target[prop]
+        }
+    },
+    deleteProperty(target,prop){
+    	if(prop.startsWith('_')){
+            throw new Error('不可访问')
+        }else{
+            delete target[prop]
+            return true
+        }
+	},
+    ownKeys(target){
+        return Object.keys(target).filter(key => !key.startsWith('_'))
+    }
+})
+
+
+try{
+    obj._password = 'xxx'
+}catch(e){
+    console.log(e.message) // 不可访问
+}
+
+
+
+// apply拦截修改返回值
+let sum = (...args) => {
+    let num = 0;
+    args.forEach(item => {
+        num += item
+    })
+    return num
+}
+
+sum = new Proxy(sum,{
+    apply(target,ctx,args){
+        return target(...args) * 2 
+    }
+})
+console.log(sum(1,2))
+console.log(sum.call(null,1,2,3)
+console.log(sum.apply(null,[1,2,3]))
+
+// construct 拦截new命令
+let User = class {
+    constructor(name){
+        this.name = name
+    }
+}
+
+User = new Proxy(User,{
+    // 1.目标对象,参数,实例对象 return:对象
+    construct(target,args,newTarget){
+        return new target(...args)
+    }
+})
+console.log(new User('imooc'))
+```
+
+> get:拦截对象属性的读取，比如proxy.foo和proxy['foo']
+>
+> set:拦截对象属性的设置，返回一个布尔值，比如proxy.foo = v 或 proxy['foo'] = v
+>
+> has:拦截propKey in proxy的操作，返回一个布尔值
+>
+> ownKeys：拦截Object.getOwnPropertyNames(proxy)、Object.getOwnPropertySymbols(proxy)、
+>
+> Object.keys(proxy)、for....in循环 返回一个数组
+>
+>  deleteProperty：拦截删除请求
+>
+> apply：拦截函数的调用，call和apply操作
+>
+> construct：拦截new命令，返回一个对象
+
+
+
+## Reflect
+
+- 映射
+- 将Object属于语言内部的方法放到Reflect上
+- 修改某些Object方法的返回结果，让其变得合理
+- 让Object操作变成函数行为
+- Reflect对象的方法与Proxy对象的方法一一对应
+
+```js
+// 使用Reflect改写拦截
+let User = {
+    name:'zs',
+    age : 18,
+    _password:'**'
+}
+User = new Proxy(User,{
+    get(target,prop){
+        if(prop.startsWith('_')){
+            throw new Error('无法访问')
+        }else{
+            return Reflect.get(target,prop)
+        }
+    },
+    set(target,prop,val){
+      if(prop.startsWith('_')){
+          throw new Error('不可访问')
+      }else{
+          Reflect.set(target,prop,val)
+          return true
+      }
+    },
+    deleteProperty(target,prop){
+        if(prop.startsWith('_')){
+            throw new Error('不可访问')
+        }else{
+            Reflect.deleteProperty(target,prop)
+            return true
+        }
+    },
+    ownKeys(target){
+        return Reflect.ownKeys(target).filter(key => !key.startsWith('_'))
+    }
+})
+
+try {
+    User.age = 5
+    console.log(User)
+} catch (e) {
+    console.log(e.message)
+}
+
+for(let key in User){
+    console.log(key);
+}
+```
+
+## Promise
+
+> 解决深渊回调地域，对异步操作状态
+
+```js
+let p  = new Promise((resolve,reject) => {
+    setTimeout(()=>{
+        //
+        if(){
+           resolve()
+           }
+        else{
+            reject()
+        }
+    },1000)
+}).then(()=>{},()=>{})
+```
+
+- Promise.resolve()
+- Promise.reject()
+- Promise.all()
+- Promise.race()
+
+```js
+// 静态方法之间调用
+let p1 = Promise.resolve('success')
+p1.then(res => {
+    console.log(res)
+})
+// 要所有的Promise对象都完成，才认为是完成
+Promise.all([])
+// 只要一个Promise对象完成就认为完成
+Promise.race([])
+
+// 应用场景(模拟)批量上传照片
+const imgArr = ['1.jpg','2.jpg','3.jpg']
+let promiseArr = []
+imgArr.forEach(item => {
+    promiseArr.push(new Promise((resolve,reject)=>{
+        resolve()
+    }))
+})
+Promise.all(promiseArr).then(res =>{
+    console.log('图片全部上传完成')
+})
+
+// 应用场景模拟(加载图片)
+function imgGet(){
+    return new Promise((resolve,reject)=>{
+        let img = new Image()
+        img.onload = function(){
+			resolve(img)
+        }
+        img.src = 'http://xxxx.www.com.jpg'
+        })
+}
+// 2秒超时
+function timeout(){
+    return new Promise((resovle,reject)=>{
+        setTimeout(()=>{
+            reject('图片请求超时')
+        },2000)
+    })
+}
+
+// 那个函数的Promise对象先到达就返回那个
+Promise.race([imgGet,timeout]).then(res => {
+    console.log(res)
+}).catch(e => {
+    console.log(e)
+})
+```
+
+
+
+## Generator(生成器函数)
+
+> 可以在函数执行时暂停,且可以在暂停的位置继续执行！
+
+- 定义，函数定义有个*
+- 函数内部有个yield关键字
+- 要手动.next(参数)调用
+- 返回对象{value:,done:}
+- 不能在嵌套函数内部使用
+
+```js
+function* foo(){
+    for(let i = 0; i < 3; i++){
+        yield i
+    }
+}
+// 调用,单步执行
+let f = foo()
+// {value:0,done:false}
+console.log(f.next())
+```
+
+```js
+function* gen(x){
+    let y = 2 * (yield(x + 1))
+    let z = yield(y / 3)
+    return x + y + z
+}
+let g = gen(5)
+console.log(g.next()) // 6
+console.log(g.next(12)) // y=24 24/3=8
+console.log(g.next(13))
+```
+
+```js
+// 7的倍数
+function* count(x = 1){
+    while(true){
+        if(x % 7 === 0){
+            yield x
+        }
+        x++
+    }
+}
+
+let n = count()
+console.log(n.next().value) //7
+console.log(n.next().value) //14
+console.log(n.next().value) //21
+console.log(n.next().value) //28
+```
+
+```js
+// 对异步操作管理
+function ajax(url,conllback){
+    // 模拟ajax
+}
+function request(url){
+    ajax(url,res=>{
+        getData.next(res)
+    })
+}
+
+function* gen(){
+    let res1 = yield request('static/a.json')
+     console.log(res1)
+    let res2 = yield request('static/b.json')
+   	 console.log(res2)
+    let res3 = yield request('static/c.json')
+     console.log(res3)
+}
+let getData = gen()
+getData.next()
+```
+
+## Iterator 迭代器
+
+> 是一种接口机制，为各种不同的数据结构提供统一访问的机制
+>
+> 主要供for....of消费
+>
+> 一句话:不支持遍历的数据结构“可遍历”
+
+```js
+// 定义返回必须是对象
+function makeIterator(arrgs){
+    let index = 0;
+    return {
+        next(){
+            return index < arrgs.length ? {
+                value:arrgs[index++],
+                done:false
+            } : {
+                value:undefined,
+                done:true
+            }
+        }
+    }
+}
+
+let get = MakeIterator(['a','b','c'])
+console.log(get.next()) // a
+console.log(get.next()) // b
+```
+
+- 可迭代的原型内部有Symbol.iterator方法
+
+```js
+let arr = ['a','b','c']
+let it = arr[Symbol.iterator]()
+console.log(it.next()) // a
+console.log(it.next()) // b
+console.log(it.next()) // c
+console.log(it.next()) // undefined
+```
+
+- 原生具备Iterator接口的数据结构
+- Array
+- Map
+- Set
+- String
+- TypedArray
+- 函数的arguments对象
+- NodeList对象
+
+> 可迭代协议:Symbol.iterator,可以直接使用for....of
+>
+> 迭代器协议:return {next(){return{value,done}}}
+
+```js
+let courses = {
+ 	allCourse:{
+        key1:['a','b','c','d'],
+        key2:['e','f','g'],
+        key3:['h','k','y']
+    }
+}
+//自己构造迭代器协议
+courses[Symbol.iterator] = function(){
+    let allCourse = this.allCourse
+    let keys = Reflect.ownKeys(allCourse)
+    let values = []
+    return {
+        next(){
+            // 第一次进来长度0，取反
+            if(!values.length){
+                if(keys.length){
+                    values = allCourse[keys[0]]
+                    // 取完删除
+                    keys.shift()
+                }
+            }
+            return {
+                done:!values.length, //长度等于0时取完取反
+                value:value.shift() //删除第一个返回值
+            }
+        }
+    }
+}
+
+// 生成器函数
+courses[Symbol.iterator] = function* (){
+    let allCourse = this.allCourse
+    let keys = Reflect.ownKeys(allCourse)
+    let value = []
+    while(1){
+        if(!values.length){
+            if(keys.length){
+                values.allCourse[keys[0]]
+                keys.shift()
+                yield values.shift()
+            }else{
+                return false
+            }
+        }else{
+            yield values.shift()
+        }
+    }
+}
+
+for(let c of courses){
+    console.log(c)
+}
+```
+
+
+
+## Module(模块化)
+
+> CommJs：node.js
+>
+> AMD:require.js 异步模块，依赖前置
+>
+> CMD:sea.js 
+>
+> Es6
+
+:disappointed_relieved::disappointed_relieved::disappointed_relieved::disappointed_relieved::disappointed_relieved::disappointed_relieved::disappointed_relieved::disappointed_relieved::disappointed_relieved::disappointed_relieved::disappointed_relieved::disappointed_relieved:太难了
+
+```js
+// 导出
+export const a = 5;
+// 导入
+import {a} from './'
+export default
+import add,{} from './'
+import * as mod from './'
+```
+
+
+
 # Ajax
+
+> 原理:
+
 ```yacas
 创建{let xhr = new XMLHttpRequest()}
 设置请求方式{xhr.open(方式,url)}

@@ -37,7 +37,9 @@ const getTableAll = async()=>{
         json.id = d[d.length - 1]
         tableIdAll.push(json)
       });
-  })
+  }).catch((e =>{
+    console.log(e.message);
+  }))
   return tableIdAll
 }
 
@@ -87,6 +89,9 @@ if(tableId['name'] == '077' ){
   .post(`https://api.huoban.com/v2/item/table/${tbId}/find`, data)
   .then((ressult) => {
     dataCount = ressult.data["filtered"];
+  })
+  .catch(e => {
+    console.log(e.message);
   });
 let dataSet = {
   data:data,

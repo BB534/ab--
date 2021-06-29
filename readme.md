@@ -362,9 +362,9 @@ s.forEach(item=>console.log(item))
 for( let key  of s ){
   console.log(key)
 }
-for (let key of s.keys)
-for (let key of s.value)
-for (let key of s.entries)
+for (let key of s.keys) // 只取key
+for (let key of s.value) // 只取value
+for (let key of s.entries) // 两者都取
 
 ```
 - 应用场景
@@ -945,7 +945,7 @@ courses[Symbol.iterator] = function(){
 courses[Symbol.iterator] = function* (){
     let allCourse = this.allCourse
     let keys = Reflect.ownKeys(allCourse)
-    let value = []
+    let values = []
     while(1){
         if(!values.length){
             if(keys.length){
@@ -988,6 +988,111 @@ import {a} from './'
 export default
 import add,{} from './'
 import * as mod from './'
+```
+
+# Es7
+
+## 数组扩展
+
+> 
+>
+> Array.prototype.includes(searchElement,fromIndex)
+>
+> includes VS indexOf 都只能判断基本数据类型
+>
+> 数值扩展
+>
+> 幂运算符* 等同于Math.pow()
+>
+> 2 ** 10
+
+
+
+## ES8
+
+> Object.values() 输出value值
+>
+> Object.entries
+
+## 对下属性描述符
+
+```js
+Reflect.defineProperty(obj,'name',{
+    value:'',
+    writable:true,// 能否重写
+    configurable:true, //能否删除
+    enumerable:fasle// 能否遍历
+})
+Object.getOwnPropertyDescriptors(obj) // 获取所有属性
+Object.getOwnPropertyDescriptor(obj,'name') // 获取单个属性
+```
+
+## 字符串扩展
+
+```js
+// 填充
+String.prototype.padStart(填充完后长度,填充字符)
+String.prototype.padEnd(填充完后长度,填充字符)
+```
+
+## 尾逗号
+
+> 编译后方便，允许参数列表后加逗号
+
+# ES9
+
+## 异步迭代
+
+>  for-await-of 
+>
+> Symbol.asyncIterator
+
+```js
+function PromiseTime(date){
+    return new Promise((resolve,reject)=>{
+        setTimeout(()=>{
+            resolve({
+                value:date,
+                done:false
+            })
+        },date)
+    })
+}
+
+let arr = [PromiseTime(1000),PromiseTime(2000),PromiseTime(3000)]
+// 遵循异步迭代器
+arr[Symbol.asyncIterator] = function(){
+    let nextIndex = 0;
+    return {
+        next(){
+            return nextIndex < arr.length ? arr[nextIndex++] : 
+            Promise.resolve({
+                value:undefined,
+                done:true
+            })
+        }
+    }
+}
+
+async function test(){
+    for await(let key of arr){
+        console.log(key);
+    }
+}
+
+test()
+```
+
+## 正则表达式扩展
+
+> dotAll
+>
+> 居民组匹配
+>
+> 后行断言
+
+```js
+
 ```
 
 

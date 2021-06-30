@@ -1,5 +1,92 @@
 
 
+# DOM
+
+```js
+// id获取袁术
+document.getElementById();
+// 通过calss查找
+document.getElementsByClassName()
+// 通过name名称获取
+dpcument.getElementsByName()
+// 通过标签名获取
+document.getElementsByTagName()
+// 通过选择器获取
+document.querySelector()
+// 通过选择器获取全部
+document.queySelectoAll()
+// 获取指定元素所有的子元素
+let div = document.querSelector('div')
+div.children() // 获取到的是所有的子元素
+div.childNodes()// 获取到的是所有的节点
+// 获取第一个子元素
+duv.firstChild()
+div.firstElementChild()
+// 获取最后一个子元素
+div.lastchild()
+div.fistElementChild()
+
+// 获取子元素/父节点
+div.parenElement
+div.parentNode
+// 相邻上一个节点/元素
+div.previousSibling
+div.previousElementSibling
+// 获取相邻的下一个节点/元素
+div.nextSibling
+div.nextElementSibling
+
+// 创建节点
+document.createElement("span")
+// 添加节点
+document.appendChild() // 会添加到最后
+// 插入节点
+document.insertBefore(参数,参数2) // 天际到参数中参数2的前面
+// 删除节点,只能通过父元素来删除
+document.parentNode.removeChild(指定子元素)
+// 克隆节点
+document.cloneNode() //参数传true，表示子元素也克隆
+
+/*
+无论是创建还是查询出来的标签，系统都会将元素包装成一个对象返回给我们，
+对象中包含了元素的属性
+*/
+
+// 获取元素属性
+let div = document.querySelector('img')
+div.src
+div.getAttribute("alt") // 可以获取自定义属性
+// 修改元素
+div.title = "图片标题"
+div.setAttribute("title","22") // 可以修改自定义属性
+// 新增属性
+div.setAttribute("it666","66666") // 存在修改，不存在新增
+// 删除属性
+div.removeAttribute("title")
+
+// 获取元素内容
+let div =  document.querySelector('div')
+div.innerHTML // 包含标签
+div.innerText // 不包含标签，去除空格
+div.textContent // 不包含标签，去除空格
+// 设置内容
+div.innerHTML
+div.innerText
+div.textContent
+
+// 设置元素样式 拥有-采用驼峰转换，添加的样式都是行内样式，会覆盖同名css
+let div =  document.querySelector('div')
+div.className = ''
+div.style.width = '300px'
+// 获取样式
+div.style.width // 只能获取行内样式的值
+window.getComputedStyle(div) // 获取全部
+
+// 
+```
+
+
+
 
 # ES5
 
@@ -1008,7 +1095,7 @@ import * as mod from './'
 
 
 
-## ES8
+# ES8
 
 > Object.values() 输出value值
 >
@@ -1093,6 +1180,130 @@ test()
 
 ```js
 
+```
+
+## Promise扩展
+
+> Promise.prototype.finally() 最终的
+
+```js
+new Promise((resolve,reject)=>{
+    setTimeout(()=>{
+        resolve('1')
+    }.1000)
+}).then().catch().finally(()=>{
+    console.log('不管成功失败我都会执行')
+})
+```
+
+# ES10
+
+## 对象扩展
+
+```js
+let obj  = {
+    name:'zs'
+    age:18
+}
+// 对象转数组
+const entries = Object.entries(obj)
+// 数组转对象
+const fromEntries = Object.fromEntries(entries)
+// 转换map
+const map = new Map()
+map.set('name','imoc')
+map.set('course','se')
+Object.fromEntries(map)
+
+const course = {
+    marh:80,
+    english:85,
+    chinese:90
+}
+const res = Objcet.entries(course).filter(([item,val])=>{val > 80})
+// 还原
+console.log(Object.fromEntries(res))
+
+```
+
+## 字符串扩展
+
+```js
+// 去除头部空白字符串
+String.prototype.trimStart()
+// 去除尾部字符串
+String.prototype.trimEnd()
+```
+
+## 数组扩展
+
+```js
+// 对多维数组扁平化
+const arr = [[1,2,3,4,5,[6,7,8,[9,10,11]],12]]
+Array.prototype.flat
+arr.flat(4) //4层
+arr.flat(Infinity)// 无限的
+// 遍历数组，并且扁平化
+const arr = [1,2,3,4,5,6]
+const res = arr.flatMap(x => [x+1])
+```
+
+## 可选的Catch Binding
+
+> 省略catch的参数和括号
+
+# ES11
+
+```js
+// 全局捕获
+
+function seletDiv(regExp,str){
+    let matches = []
+    for(let match of str.matchALL(regExp)){
+        matches.push[match[1]]
+    }
+}
+
+
+// 动态导入
+import('./ajax').then(mod =>{
+    mod.default('static/a.json',res=>{
+        console.log(res)
+    })
+})
+```
+
+## 新的数据类型 BigInt
+
+```js
+// 大数据类型
+```
+
+## Promise扩展
+
+```js
+// 不论成功都返回状态
+Promise.allSettled()
+```
+
+## globalThis
+
+```js
+// 提供一个标准方式获取不同环境下的全局对象
+
+```
+
+## 可选链
+
+```js
+user?.address?.getNum?.() // 存在调用
+```
+
+## 空值合并运算符
+
+```js
+const = null 
+const a = b ?? 6
 ```
 
 

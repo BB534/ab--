@@ -1391,13 +1391,63 @@ module.exports = {
 
 > 加载器，可以让webpack处理各类非JS文件的模块
 
+```js
+// 安装babel加载器
+npm install --save-dev babel-loder@8.1.0 @babel/core@7.11.0 @babel/preset-env@7.11.0
+// 在项目目录下创建.babelrc 配置
+{
+    "presets":["preset-env"]
+}
+// webpack.config.js 中配置
+module.exports = {
+   entry:{
+        main:'./src/index.js',
+        search:'./src/search.js'
+    },
+   output:{
+       path:path.resolve(__dirname,'dist'),
+       filename:'[name].js' // 固定语法，对应入口变量
+   },
+    // 所有加载器配置
+   module:{
+       rules:[
+           {
+               test:/\.js$/, // 检测的正则
+               exclude:/node_modules/, // 排除,
+               loader:'babel-loader' // 加载器模块名
+               // 多个loader用use[],加载器从右到左顺序
+           }
+       ]
+   }
+}
+
+// 完善编译,安装core-js模块
+入口文件引入core-js/stable模块
+```
+
+## plugins
+
+> 插件,可以执行范围更广的任务。
+
+```js
+// 安装htmlwebpackplugin插件
+const htmlWebpackPlugin = require('html-webpack-plugin')
+nodule.exports = {
+    plugins:[
+        new htmlWebpackPlugin({
+            template:"./", //模板
+            filename:'' // 命名
+            chunks:[] // 想引入那个文件
+        })
+    ]
+}
+```
+
+
+
 # Babel
 
 > 1.ES6语法转义编译 （https/babeljs.io）转换成ES6之前的代码
-
-```json
-// 
-```
 
 
 

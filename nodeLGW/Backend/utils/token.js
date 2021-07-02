@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const fs = require("fs");
 const path = require("path");
-
+const axios = require("axios");
 /**
  * 加密
  * @param {Object} key
@@ -26,3 +26,18 @@ exports.verify = (token) => {
   let result = jwt.verify(token, verifyKey, { algorithm: "RS256" });
   return result;
 };
+
+
+exports.hbyTk = ()=>{
+  axios.interceptors.request.use(
+    function (config) {
+      // 设置统一的请求头
+      config.headers.Authorization =
+        "Bearer KvGvMPgIcSePBEzpF73wW7OAgY24XdcHFc9XBFts001";
+      return config;
+    },
+    function (error) {
+      return Promise.reject(error);
+    }
+  );
+}

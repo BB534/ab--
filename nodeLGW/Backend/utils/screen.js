@@ -10,33 +10,45 @@ const screen = async (result, jh) => {
         data = result[key];
       }
     }
-
     // 开始分离数据
     let arry = [];
     await data.forEach((value, index, arr) => {
       arry.push(value["fields"]);
     });
-
     // 往数据库中加数据
-    const pushJson = async (json)=>{
-        await hbyModel.saveHby(json)
-    }
+    const pushJson = async (json) => {
+      return new Promise(async (reslove, reject) => {
+        let res = await hbyModel.saveHby(json);
+        if (res) {
+          reslove({
+            value: res,
+            done: false,
+          });
+        } else {
+          reject({
+            value: res,
+            done: true,
+          });
+        }
+      });
+    };
+    let then = [];
     queue.add(async () => {
       for (let index = 0; index < arry.length; index++) {
         queue.add(async () => {
           let json = {
-            'date':'',
-            'operator':'',
-            'shop':'',
-            'keyword':'',
-            'price':'',
-            'wechat':'',
-            'taobao':'',
-            'order':'',
-            'refund':'',
-            'operating':'',
-            'gift':'',
-            'remarks':''
+            date: "",
+            operator: "",
+            shop: "",
+            keyword: "",
+            price: "",
+            wechat: "",
+            taobao: "",
+            order: "",
+            refund: "",
+            operating: "",
+            gift: "",
+            remarks: "",
           };
           for (let i = 0; i < arry[index].length; i++) {
             let fileid = arry[index][i]["field_id"];
@@ -151,14 +163,12 @@ const screen = async (result, jh) => {
                 break;
             }
           }
-          pushJson(json);
+          then.push(pushJson(json));
         });
-        
       }
     });
-
   });
-
+  Promise.resolve('成功')
 };
 
 exports.screen = screen;

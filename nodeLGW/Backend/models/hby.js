@@ -36,6 +36,8 @@ const saveHby = ({
        let res =  hbys.save();
         if(res){
             reslove(res)
+        }else{
+            reject(err)
         }
     })
 }
@@ -100,6 +102,7 @@ const  hbyWhereACounts = (operator,shop)=>{
 const hbygetdata = async (shop) => {
     return hbyModel.find({shop})
 }
+
 module.exports = {
     saveHby,
     hbyCount,

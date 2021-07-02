@@ -3,6 +3,7 @@ const { screen } = require("../utils/screen");
 const hbyModel = require("../models/hby");
 const PQueue = require("p-queue").default;
 const {exportTable} = require('../utils/exportTable')
+const {getUrl} = require('../utils/geturl')
 // 并发数量
 const queue = new PQueue({ concurrency: 20 });
 
@@ -65,20 +66,27 @@ const hbyGetComplete = async (req,res,next)=>{
   // 导出账单时停止定时获取
   let {shop} = req.query
   queue.add (async ()=>{
-    await exportTable(shop)
+    let data = await exportTable(shop)
     res.render('success',{
       data:JSON.stringify({
-        msg:'成功'
+        msg:data
       })
     })
   })
-  
 }
-
-
+// 先执行同步数据
+const hbytbdata = async (req,res,next)=>{
+  getUrl()
+  res.render('success',{
+    data:JSON.stringify({
+      msg:'同步成功'
+    })
+  })
+}
 
 exports.hbyControllers = hbyControllers;
 exports.hbyGetDataCount = hbyGetDataCount;
 exports.hbyGetWhere = hbyGetWhere;
 exports.hbyGetWheresCount = hbyGetWheresCount
 exports.hbyGetComplete = hbyGetComplete 
+exports.hbytbdata = hbytbdata

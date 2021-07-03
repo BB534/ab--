@@ -1448,12 +1448,106 @@ nodule.exports = {
 # Babel
 
 > 1.ES6语法转义编译 （https/babeljs.io）转换成ES6之前的代码
+>
+> 查询帮助:setup页面,https/babeljs.io/setup
+>
+> 安装node、初始化json文件、
+>
+> 安装包,@babel/core/@babel/cli/@babel/preset-env
+>
+> 在json中添加编译命令:babel src -d dist
+>
+> 创建配置文件.babelrc,配置{"presets":["@babel/preset-env"]}
+>
+> 编译测试 npm run bliud
 
+# Cookie
 
+> 浏览器存储数据的一种方式
+>
+> 应为存储在用户本地,而不是存储在服务器上,是本地储存
+>
+> 一般会自动随着浏览器每次请求发送到服务端
+
+```js
+// 写入cookie
+document.cookie='username=zs';
+
+// 读取
+document.cookie // 全部的cookice
+
+// （名称）（值）（到期时间），名称货值值包含非英文字母，写入时需要使用encodeURLComponent()编码,读取时使用decodeURLCpmponent()解码
+
+// 生命周期,到期时间没设置,默认会话Cookie,窗口关闭就关闭,expires 或max-age
+document.cookie = `username=alex;expires=${new date()}`
+max-age 值为数字,当前时间+多少秒后过期,单位秒
+// 值是或负数，cookie就会删除
+// domain域名,限定使用范围
+document.cookie = 'username=alex;domain=www.baidu.com'
+// path路径
+// HttpOnly 限制不能js去访问
+// secure安全标志，智能在https的情况下才能发送服务端
+```
+
+## 封装cookie
+
+```js
+// 写入cookie
+const set = (name,value,{maxAge,domain,path,secure} = {} ) =>{
+    let str = `${name}=${value}`
+    if(typeof maxAge === number){
+        str += `;maxage=${maxAge}`
+    }
+    if(domain){
+        str+=`;domain=${domain}`
+    }
+    if(path){
+        str+=`;path=${path}`
+    }
+    if(secure){
+         str+=`;secure=${secure}`
+    }
+}
+
+// 键值对获取cookie
+const get = (name)=>{
+    let cookie = document.cookie.split(';')
+    for(let item of cookie){
+        let [key,value] = item.split('=')
+        if(key == name){
+            return {key:value}
+        }
+        return undefine
+    }
+}
+```
+
+# localStorage
+
+> 本地储存，不会发送到服务端、有大小限制，看浏览器
+>
+> 持久化本地存储
+>
+> 键值对类型，只能是字符串类型，不是字符串也会自动转换为字符串
+
+```js
+// 写入
+localStorage.setItem('username','alex')
+
+// 长度length
+
+// 读取
+localStorage.getItem('username')
+
+// 清除clear
+localStorage.clear()
+
+// 自动填充,用来做表单自动填充
+```
 
 # Ajax
 
-> 原理:
+> XHR属性、方法
 
 ```js
 //创建
@@ -1467,6 +1561,16 @@ xhr.onload = function(){
     //接收返回数
     xhr.responseText 
 }
+xhr.timeout = 1000; // 超时时间,单位毫秒
+xhr.withCredentials // 指定是否携带cookie
+// load() 加载,响应数据可用时
+// abort() 终止请求，配合abort事件一起使用,再send后调用
+// setRequestHeader() 设置请求头信息,只有部分可以设置
+// error()
+// 通过html表单元素创建FromData对象
+const fd = new FromData(表单元素)
+// 自己添加数据
+fd.append()
 ```
 ## get请求参数
 ```js
@@ -1493,10 +1597,10 @@ bodyParser.json()来解析json
 ```js
 共有五个
 0:请求已经初始化
-1.请求建立
-2.请求发送
-3.响应完成，但只是部分数据
-4.响应完成
+1:请求建立
+2:请求发送
+3:响应完成，但只是部分数据
+4:响应完成
 xhr.readyState 获取ajax状态码
 xhr.onreadyStateChange() 监听状态码改变方法
 必须用于xhr.send()方法前
@@ -1506,7 +1610,7 @@ xhr.onreadyStateChange() 监听状态码改变方法
 xhr.status 获取http状态码
 400:返回结果不是预期的结果
 404:请求地址不存在
-500：服务器端能接收到请求，服务器端返回500状态码
+500:服务器端能接收到请求，服务器端返回500状态码
 onerror事件网络中断，请求失败
 xhr.onerror = function(){
     alert(‘网络错误，请检查’)
@@ -1588,7 +1692,7 @@ function ajax(options){
 6.当用户选择城市时，根据城市id获取县城信息
 ```
 ##  模板引擎:
-```yacas
+```js
 art-template
 具体看官网文档,有使用说明
 template.defaults.imports：开放模板变量
@@ -1648,7 +1752,7 @@ function jsonp(options){
 ```
 
 ## CORS跨域资源共享 跨域资源共享
-```yacas
+```js
 在服务端设置响应头header:
 允许那些客户端访问:
 'Access-Control-Allow-Origin':'*'，
@@ -1659,8 +1763,8 @@ function jsonp(options){
 利用模块 request
 ```
 
-## Cookie：
-```yacas
+## Cookie：跨域
+```js
 客户端设置:
 withCredentials:true //允许跨域携带cookie
 服务端设置:
@@ -1799,9 +1903,66 @@ btn.onclick = function(){
 }
 ```
 
+# axios
+
+> 基于promise的http库,可以在浏览器和node中使用
+>
+> 第三方ajax库
+>
+> 中文官方文档:http://www.axios-js.com/zh-cn/docs/
+
+```js
+// 使用
+axios(url,{
+    method:'post',// 请求参数
+    headers:{}, // 请求头
+    params:{}, // 请求头携带数据
+    data:{}, // 请求体携带数据
+    timeout:10 // 超时时间
+    withCredentials:true // 允许跨域携带cookie
+}).then(()=>{}).catch(()=>{})
+
+// get
+axios.get()
+//
+axios.post
+```
+
+# Fetch
+
+> Fetch是基于Promise的方案替代ajax
+>
+> 没有abort timeout等事件方法
+
+```js
+/** 使用参数1:url,参数2:{
+method:,
+body:,不能直接传对象可以传FromData,或者JSON.stringify()
+headers:,
+mode:'cors',跨域默认就是
+}
+*/
+fetch(url).then((res)=>{
+    if(res.ok){
+        // 读取,返回promise对象
+        return res.json();
+        return res.rext();
+    }else{
+        throw new Error(`HTTP Code 异常 ${res.status}`)
+    }
+}).then(data=>{
+    console.log(data)
+}).catch(e =>{
+    console.log(e)
+})
+// body/bodyUsed 只能读一次,读过之后就不让读了
+// ok 如果为true,表示可以读取数据
+
+```
+
 # GIT
 
-```yacas
+```js
 Git是一个版本管理控制系统（缩写vcs），它可以在任何时间点,将文档的状态作为更新记录保存起来，也可以在任何时间点，将更新记录恢复回来。
 ```
 
@@ -1811,14 +1972,14 @@ Git是一个版本管理控制系统（缩写vcs），它可以在任何时间�
 
 ### 1.配置提交人姓名:
 
-   ```yacas
-   git config --global user.name 提交人姓名
+   ```js
+   git config --global user.name // 提交人姓名
    ```
 
 ### 2.配置提交人邮箱:
 
-```yacas
-git config --global user.email 提交人邮箱
+```js
+git config --global user.email // 提交人邮箱
 ```
 
 ### 3.查看git配置信息:
@@ -1857,7 +2018,7 @@ git add . // 将目录中的文件全部添加到暂存区
 ### 4.提交信息，向仓库中提交代码
 
 ```yacas
-git commit -m 需要提交的信息
+git commit -m // 需要提交的信息
 ```
 
 ### 5.查看提交记录
@@ -1883,7 +2044,7 @@ git rm --cached
 ### 3.将git仓库中指定的更新记录恢复出来,并且覆盖暂存区和工作目录
 
 ```yacas
-git rest --hard 之前提交的ID
+git rest --hard  ID // 之前提交的ID
 ```
 
 ## GIT分支
@@ -1897,25 +2058,25 @@ git branch
 ### 2.创建分支
 
 ```yacas
-git branch 分支名称
+git branch // 分支名称
 ```
 
 ### 3.切换分支
 
 ```yacas
-git checkout 分支名称
+git checkout // 分支名称
 ```
 
 ### 4.合并分支
 
 ```yacas
-git merge 来源分支
+git merge // 来源分支
 ```
 
 ### 5.删除分支 (分支被合并后才允许被删除) (-D 强制删除)
 
 ```yacas
-git branch -d 分支名称
+git branch -d // 分支名称
 ```
 
 ## 暂时保存更改
@@ -1947,25 +2108,25 @@ git stash pop
 
 1.推送远程仓库 HTTPS协议的
 
-```yacas
+```js
 git push 仓库地址 分支名称
 ```
 
-```yacas
+```js
 git push 仓库地址别名 分支名称
 ```
 
-```yacas
+```js
 git push -u 仓库地址别名 分支名称   // -u记住已送地址及分支，下次推送只需要输入git push即可
 ```
 
-```yacas
+```js
 git remote add 仓库地址别名 远程仓库地址 // 给仓库地址取别名
 ```
 
 2.拉取仓库最新数据
 
-```yacas
+```js
 git pull 仓库地址 分支名称
 ```
 
@@ -1973,7 +2134,7 @@ git pull 仓库地址 分支名称
 
 ## 第三人进行克隆
 
-```yacas
+```js
 git clone 仓库地址
 ```
 
@@ -2013,7 +2174,7 @@ ssh-keygen
 
 git忽略清单文件名称
 
-```yacas
+```js
 新建.gitignore 将不需要添加暂存区的文件名称写在里边即可
 ```
 
@@ -2055,11 +2216,11 @@ npm i --production // 只装生产环境的包
 npm init -y // 初始化package.json  ^只锁定主版本号,~锁定三个版本，*最新版本，空锁定补丁
 ```
 
-```yacas
+```js
 npm view 包名 versions // 查看版本
 ```
 
-```yacas
+```js
 npm i 包名@版本号 // 安装指定版本
 ```
 
@@ -2085,11 +2246,11 @@ npm run // 运行自定义脚本
 
 
 ## npm 安装 git 上发布的包
-```yacas
-# 这样适合安装公司内部的git服务器上的项目
+```js
+// 这样适合安装公司内部的git服务器上的项目
 npm install git+https://git@github.com:lurongtao/gp-project.git
 
-# 或者以ssh的方式
+// 或者以ssh的方式
 npm install git+ssh://git@github.com:lurongtao/gp-project.git
 ```
 
@@ -3016,9 +3177,10 @@ module.exports = {
 npx webpack
 ```
 
-### 启动模块
+### 服务器
 
 ```js
+// 在内存中使用
 webpack-dev-server
 ```
 

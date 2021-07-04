@@ -1443,6 +1443,87 @@ nodule.exports = {
 }
 ```
 
+## 总结
+
+```js
+const path = require('path')
+const htmlWebpackPlugin = require('html-webpack-plugin')
+// 设置绝对路径
+const resolve = dir => path.resolve(__dirname,dir)
+module.exports = {
+  mode:'development', // 开发环境
+  // 入口文件
+  entry:{
+    index:'./src/page/index/index.js'
+  },
+  // 输出路径
+  output:{
+    path:resolve('dist'),
+    filename:'js/[name].js'
+  },
+  // 调试用的，出错的时候直接定位到原始代码，而不是编译后的代码
+  devtool:'cheap-module-eval-source-map',
+  resolve:{
+    // 自动补全(可以省略扩展名)
+    extensions:['.js'],
+    // 路径别名
+    alias:{
+      api:resolve('src/api'),
+      fonts:resolve('src/assets/fonts'),
+      styles:resolve('src/assets/styles'),
+      images:resolve('src/assets/images'),
+      component:resolve('src/component'),
+      pages:resolve('src/page')
+    }
+  },
+  // 不同类型的模块处理规则
+  module:{
+    rules:[
+      // css
+      {
+        test:/\.css$/,
+        use:['style-loader','css-loader']
+      },
+      // 模板文件
+      {
+        test:/\.art$/,
+        loader:'art-template-loader'
+      },
+      // 图片
+      {
+        test:/\.(png|jpe?g|gif|svg)$/,
+        loader:'url-loader',
+        options:{
+          // 小于10K的图片转换成编码
+          limit:10000,
+          // 其他图片移动到
+          name:'images/[name].[ext]',
+          // 禁止使用es6转换
+          esModule:false
+        }
+      },
+      // 字体文件
+      {
+        test:/\.(woff2?|eot|ttf|otf)$/,
+        loader:'url-loader',
+        options:{
+          limit:10000,
+          name:'fonts/[name].[ext]'
+        }
+      }
+    ]
+  },
+  //插件
+  plugins:[
+    // 自动依赖注入html模板,并输出html文件到目标文件夹
+    new htmlWebpackPlugin({
+      filename:'index.html',
+      template:'./src/pages/index/index.art'
+    })
+  ]
+}
+```
+
 
 
 # Babel
@@ -1811,7 +1892,7 @@ $(dcoument).on('ajaxComplete',function(){
 })
 ```
 
-# NProgress 请求进度条
+## NProgress 请求进度条
 
 ```html
 <link rel='stylesheet' href='nprogress.css' />
@@ -1825,7 +1906,7 @@ NProgress.start()
 NProgress.done()
 ```
 
-# RESTFUL 风格的API
+## RESTFUL 风格的API
 
 > - GET ： 获取数据
 > - POST：添加数据
@@ -1867,7 +1948,7 @@ app.patch('/users/:id',(req,res)=>{
 
 
 
-# XML
+## XML
 
 > XML的全称是extensible markup language,代表可扩展标记语言，它的作用是传输和存储数据。
 
@@ -1959,6 +2040,8 @@ fetch(url).then((res)=>{
 // ok 如果为true,表示可以读取数据
 
 ```
+
+
 
 # GIT
 
@@ -3265,7 +3348,43 @@ openssl > genrsa -out rsa_private_key.pem 2048
 > 根据私钥生成公钥：
 > openssl > rsa -in rsa_private_key.pem -pubout -out rsa_public_key.pem
 
-# 杂项
+# 移动端
+
+> 响应式、屏幕适配
+>
+> 改变css像素的大小实现多端适配
+
+## 视口（viewport）
+
+```html
+<!--- 浏览器自动调整视口宽度 -->
+<meta name="viewport" content="width=device-width">
+<!-- 缩放比例1:1 -->
+<meta name="viewport" content="initial-scale-1">
+<!-- 组合 -->
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,maximum-sacle=1,minimum-scale=1">
+```
+
+## Flex布局
+
+```css
+/*容器,弹性盒子、容器的子元素会成为容器成员、子元素内部的元素并不会*/
+/* 使用弹性布局 flex:作为弹性伸缩 inline-flexd:作为内联块级弹性伸缩 */
+display
+/* 设置主轴 row:水平方向,从左到右 row-reverse:水平从右到左 column:垂直从上到下 column-reverse:垂直从下到上  */
+flex-direction
+/* 定义如果一条轴线排不下如何换行 nowrap:不换行 wrap:换行，第一行在上方 wrap-reverse：换行第一行在下方 */
+flex-warp
+/*是flex-direction属性和flex-wrap属性的简写形式 默认值为 row nowarp*/
+flex-flow
+/*定义了项目在主轴上的对齐方式 flex-start:起点  flex-end:终点 center: 居中space-between:两端对齐,项目之间的间隔都相等 space-around:每个项目的两侧间隔相等，所以项目之间的间隔比项目与边框的间隔大一倍 */
+justify-content
+/*在侧轴上的对齐方式 flex-start:起点对齐 flex-end:终点 centenr：居中 baseline:项目的第一行文字基线对齐  stretch:默认值，如果未设置高度或设为auto,将占满整个容器的高度*/
+align-items
+```
+
+
+
 ## Jquery观察者模式调用
 
 ### 定义：

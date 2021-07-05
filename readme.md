@@ -2987,7 +2987,7 @@ module.exports = indexRoute
 
 ### 安装
 
-```
+```js
 // 下载地址
 www.mongodb.org/downloads
 // 创建文件
@@ -3371,16 +3371,123 @@ openssl > genrsa -out rsa_private_key.pem 2048
 /*容器,弹性盒子、容器的子元素会成为容器成员、子元素内部的元素并不会*/
 /* 使用弹性布局 flex:作为弹性伸缩 inline-flexd:作为内联块级弹性伸缩 */
 display
-/* 设置主轴 row:水平方向,从左到右 row-reverse:水平从右到左 column:垂直从上到下 column-reverse:垂直从下到上  */
+/* 设置主轴 row:水平方向,从左到右
+row-reverse:水平从右到左 
+column:垂直从上到下 
+column-reverse:垂直从下到上  */
 flex-direction
-/* 定义如果一条轴线排不下如何换行 nowrap:不换行 wrap:换行，第一行在上方 wrap-reverse：换行第一行在下方 */
+/* 定义如果一条轴线排不下如何换行 
+nowrap:不换行 
+wrap:换行，第一行在上方 
+wrap-reverse：换行第一行在下方 */
 flex-warp
 /*是flex-direction属性和flex-wrap属性的简写形式 默认值为 row nowarp*/
 flex-flow
-/*定义了项目在主轴上的对齐方式 flex-start:起点  flex-end:终点 center: 居中space-between:两端对齐,项目之间的间隔都相等 space-around:每个项目的两侧间隔相等，所以项目之间的间隔比项目与边框的间隔大一倍 */
+/*定义了项目在主轴上的对齐方式 
+flex-start:起点  
+flex-end:终点 
+center: 居中
+space-between:两端对齐,项目之间的间隔都相等 
+space-around:每个项目的两侧间隔相等，所以项目之间的间隔比项目与边框的间隔大一倍 */
 justify-content
-/*在侧轴上的对齐方式 flex-start:起点对齐 flex-end:终点 centenr：居中 baseline:项目的第一行文字基线对齐  stretch:默认值，如果未设置高度或设为auto,将占满整个容器的高度*/
+/*在侧轴上的对齐方式 
+flex-start:起点对齐 
+flex-end:终点 
+centenr：居中 
+baseline:项目的第一行文字基线对齐  
+stretch:默认值，如果未设置高度或设为auto,将占满整个容器的高度*/
 align-items
+/*多跟轴线,多行在交叉轴上的对其方式,如果只有一行,属性补起效果
+flex-start:交叉轴起点对齐
+flex-end:终点对齐
+center:居中 
+space-between:两端对齐
+space-around:两侧间隔相等
+stretch:轴线占满整个交叉轴
+*/
+align-content
+
+
+/*项目的属性*/
+/* 定义项目的排序顺序,数值越越靠前,默认0*/
+order
+/*放大比例,默认0,如果存在剩余空间也不会放大，
+如果所有项目的flex-grow属性都为1,则将它们等分剩余空间
+如果一个项目的flex-grow属性为2,其他项目为1,则前者的占据剩余空间都比其他项目多一倍
+入股有的项目有flex-grow属性,有的项目有width属性,有flex-grow属性的项目将等分剩余空间
+*/
+flex-grow
+/*
+定义了项目的缩小比例，默认1,如果空间不足,项目就会缩小
+如果所有项目的属性都为1,空间不足时,都会缩小
+如果一个项目的属性为0，其他项目都为1,空间不足时,前者不缩小,负值对该属性无效
+*/
+flex-shrink
+/*
+定义在分配多余空间之前,项目占据主轴空间,浏览器根据这个属性,计算主轴是否有多余的空间,他的默认值为auto,项目的本来大小
+*/
+flex-basis
+/*
+简写 flex-grow/flex-shrik flex-basis的简写 默认值为0 1 auto 后两个可选
+属性快捷写法:auto (1 1 auto) 和 none (0 0 auto)
+*/
+flex
+/*
+允许单个项目有与其他项目不一样的对其方式,可覆盖align-items属性,默认值为auto
+表示继承父元素的align-items属性,如果没有父元素,则等于stretch
+auto
+flex-start
+flex-end
+center
+baseline
+stretch
+*/
+align-self
+```
+
+## 媒体查询
+
+```css
+/*media query 查询屏幕类型 屏幕大小
+一套样式不可能适应各种大小的屏幕
+针对不同屏幕大小写样式
+screen:屏幕 
+min-width:最小宽度
+媒体类型:all、screen、print（打印）、speech（屏幕阅读器）
+逻辑：
+and(与)
+,(或)
+not(非)
+媒体特征表达式:
+width/max-width/min-width
+-webkit-device-pixel-ratio
+-webkit-max-device-pixel-rario
+-webkit-min-pixel-ratio
+orientation:
+	landscape (横屏)
+	portrait (竖屏)
+height
+device-width
+device-height
+screen-wdith
+screen.heigth
+aspect-ratio (视口的宽高比)
+*/
+@media screen and (min-width:900px)
+    
+/*@断点
+    xs：< 576px
+    sm:576px - 768px
+    md:868px - 992px 
+    lg:992px - 1200px
+    xl: >1200px
+*/
+```
+
+## 栅格系统
+
+```css
+
 ```
 
 

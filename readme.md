@@ -3254,36 +3254,13 @@ module.exports = {
 
 ```
 
-### 编译
-
-```js
-npx webpack
-```
-
-### 服务器
-
-```js
-// 在内存中使用
-webpack-dev-server
-```
-
-
-
 ## randomstring 生成加密字符串
-
-
 
 ## Mongoose工具
 
-```
+```js
 http://www.mongoosejs.net/
 ```
-
-## bcrypt加密
-
-## cors后端跨域模块
-
-## Robo T3 可视化数据库软件
 
 ## Cookie-Session 模块
 
@@ -3484,19 +3461,87 @@ aspect-ratio (视口的宽高比)
 */
 ```
 
-## 栅格系统
+## 通用适配方案
 
-```css
+```js
+(function () {
+    'use strict';
 
+    // dpr->scale = 1 / dpr
+    var docEl = document.documentElement,
+        viewportEl = document.querySelector('meta[name="viewport"]'),
+        dpr = window.devicePixelRatio || 1,
+        maxWidth = 540,
+        minWidth = 320;
+
+    // 计算缩放比例
+    dpr = dpr >= 3 ? 3 : (dpr >= 2 ? 2 : 1);
+
+    docEl.setAttribute('data-dpr', dpr);
+    docEl.setAttribute('max-width', maxWidth);
+    docEl.setAttribute('min-width', minWidth);
+
+
+    var scale = 1 / dpr,
+        content = 'width=device-width, initial-scale=' + scale + ', maximum-scale=' + scale + ', minimum-scale=' + scale + ', user-scalable=no';
+
+    if (viewportEl) {
+        viewportEl.setAttribute('content', content);
+    } else {
+        viewportEl = document.createElement('meta');
+        viewportEl.setAttribute('name', 'viewport');
+        viewportEl.setAttribute('content', content);
+        document.head.appendChild(viewportEl);
+    }
+
+    setRemUnit();
+
+    window.addEventListener('resize', setRemUnit);
+
+    function setRemUnit() {
+        var ratio = 18.75;
+        var viewWidth = docEl.getBoundingClientRect().width || window.innerWidth;
+
+        // console.log(viewWidth);
+
+        if (maxWidth && (viewWidth / dpr > maxWidth)) {
+            viewWidth = maxWidth * dpr;
+        } else if (minWidth && (viewWidth / dpr < minWidth)) {
+            viewWidth = minWidth * dpr;
+        }
+
+        docEl.style.fontSize = viewWidth / ratio + 'px';
+    }
+})();
 ```
 
+## 移动端事件
 
+```js
+// 触摸事件touch、手势、传感器
+// 触摸开始
+element.ontouchstart
+// 触摸移动
+element.ontouchmove
+// 触摸结束
+element.ontouchend
+// 触摸取消、中断
+element.ontouchcancel
+//pointer事件
+
+// 高级事件
+HAMMER.JS库
+```
+
+## Swiper
+
+> 支持PC、移动端轮播
 
 ## Jquery观察者模式调用
 
 ### 定义：
 
-```
+```js
 $('body').on('自定义调用id',(e,data)=>{
 	
 })

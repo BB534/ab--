@@ -3576,4 +3576,31 @@ onmouseout 移开鼠标
 onload ：页面加载
 onchange：改变
 onsubmit ：表单提交。
+
 ```
+
+# 改变input表单提示文字颜色
+
+```css
+.searchbox-input::-webkit-input-placeholder {
+  /* WebKit browsers 适配 Chrome */
+  color: #fff;
+}
+
+.searchbox-input:-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 适配 Firefox */
+  color: #fff;
+}
+
+.searchbox-input::-moz-placeholder {
+  /* Mozilla Firefox 19+ 适配 Firefox */
+  color: #fff;
+}
+
+.searchbox-input:-ms-input-placeholder {
+  /* Internet Explorer 10+  适配 IE */
+  color: #fff;
+}
+
+```
+
